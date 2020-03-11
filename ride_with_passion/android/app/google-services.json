@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "699980756896",
+    "firebase_url": "https://ride-with-passion.firebaseio.com",
+    "project_id": "ride-with-passion",
+    "storage_bucket": "ride-with-passion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699980756896:android:cb4c6a6e66fd6806be16c5",
+        "android_client_info": {
+          "package_name": "at.gemnova.ridewithpassion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699980756896-kmuef3qngf58fqvgolon58l5l3h95sbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgPrlRwibimS0OkkRyqHaEoM2IQZo594A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699980756896-kmuef3qngf58fqvgolon58l5l3h95sbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
