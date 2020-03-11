@@ -43,6 +43,8 @@ dependencies:
   #https://pub.dev/packages/cloud_firestore
   cloud_firestore: 0.13.2 #not the newest version because of issues with dex files
 
+  firebase_core: 0.4.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

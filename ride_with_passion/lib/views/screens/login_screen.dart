@@ -40,6 +40,7 @@ class LoginScreen extends StatelessWidget {
                         CustomTextField(
                           label: "Passwort",
                           hint: "Passwort",
+                          obscure: true,
                           onSave: model.setPassword,
                           validator: (password) {
                             Pattern pattern =
