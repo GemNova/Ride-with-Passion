@@ -8,16 +8,16 @@ part of 'user.dart';
 
 User _$UserFromJson(Map json) {
   return User(
-    userId: json['userID'] as String,
+    id: json['id'] as String,
     email: json['email'] as String,
-    name: json['name'] as String,
-    username: json['username'] as String,
+    firstName: json['firstName'] as String,
+    lastName: json['lastName'] as String,
   );
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'userID': instance.userId,
+      'id': instance.id,
       'email': instance.email,
-      'name': instance.name,
-      'username': instance.username,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
     };

@@ -2,33 +2,28 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/logger.dart';
+import 'package:ride_with_passion/models/user.dart';
+import 'package:ride_with_passion/router.dart';
 import 'package:ride_with_passion/services/firebase_service.dart';
 import 'package:rxdart/subjects.dart';
 
 enum AuthProblems { UserNotFound, PasswordNotValid, NetworkError }
 
 class AuthService with ChangeNotifier {
-  var _authInstance = FirebaseAuth.instance;
-
-  final FirebaseService _firebaseService = getIt<FirebaseService>();
+  final _authInstance = FirebaseAuth.instance;
+  final _firebaseService = getIt<FirebaseService>();
   BehaviorSubject<bool> isLoggedIn = BehaviorSubject();
-  FirebaseUser user;
+  User user;
   final log = getLogger("AuthService");
 
   AuthService() {
-    _authInstance.onAuthStateChanged.listen((newUser) async {
-      user = newUser;
-      if (newUser != null) {
+    _authInstance.onAuthStateChanged.listen((firebaseUser) async {
+      if (firebaseUser != null) {
         isLoggedIn.add(true);
-        // _fireStoreInstance
-        //     .collection('users')
-        //     .document(user.uid)
-        //     .snapshots()
-        //     .listen((snapshot) {
-        //   final user = User.fromJson(snapshot.data);
-        // });
+        this.user = await _firebaseService.getUser(firebaseUser);
       } else
         isLoggedIn.add(false);
     });
@@ -38,13 +33,33 @@ class AuthService with ChangeNotifier {
     _authInstance.signOut();
     this.user = null;
     isLoggedIn.add(false);
+    Get.offAllNamed(LoginRoute);
   }
 
   Future loginUser({@required String email, @required String password}) async {
     try {
-      AuthResult result = await _authInstance.signInWithEmailAndPassword(
+      return await _authInstance.signInWithEmailAndPassword(
           email: email, password: password);
-      user = result.user;
+    } catch (e) {
+      _printError(e);
+      return Future.error(e.message);
+    }
+  }
+
+  Future registerUser(
+      {String email,
+      String password,
+      String firstName,
+      String lastName}) async {
+    try {
+      AuthResult result = await _authInstance.createUserWithEmailAndPassword(
+          email: email, password: password);
+      final user = User(
+          id: result.user.uid,
+          email: email,
+          firstName: firstName,
+          lastName: lastName);
+      _firebaseService.saveUser(user);
       return user;
     } catch (e) {
       _printError(e);

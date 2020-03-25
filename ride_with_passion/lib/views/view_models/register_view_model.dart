@@ -4,28 +4,52 @@ import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/router.dart';
 import 'package:ride_with_passion/services/auth_service.dart';
 
-class LoginViewModel extends ChangeNotifier {
+class RegisterViewModel extends ChangeNotifier {
   bool isLoading = false;
   final formKey = GlobalKey<FormState>();
 
+  String firstName;
+  String lastName;
   String email;
   String password;
 
+  bool get isButtonEnabled =>
+      (lastName?.isNotEmpty ?? false) &&
+      (firstName?.isNotEmpty ?? false) &&
+      (password?.isNotEmpty ?? false) &&
+      (email?.isNotEmpty ?? false);
+
   setPassword(String password) {
     this.password = password;
+    notifyListeners();
   }
 
   setEmail(String email) {
     this.email = email;
+    notifyListeners();
   }
 
-  onLoginPressed() {
+  setFirstName(String firstName) {
+    this.firstName = firstName;
+    notifyListeners();
+  }
+
+  setLastName(String lastName) {
+    this.lastName = lastName;
+    notifyListeners();
+  }
+
+  onRegisterPressed() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       isLoading = true;
       notifyListeners();
       getIt<AuthService>()
-          .loginUser(email: email, password: password)
+          .registerUser(
+              email: email,
+              password: password,
+              firstName: firstName,
+              lastName: lastName)
           .then((_) {
         Get.offAllNamed(HomeRoute);
       }).catchError((error) {
@@ -39,7 +63,7 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  void onRegisterPressed() {
-    Get.toNamed(RegisterRoute);
+  void onLoginPressed() {
+    Get.back();
   }
 }

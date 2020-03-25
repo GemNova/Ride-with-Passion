@@ -7,18 +7,16 @@ part 'user.g.dart';
   explicitToJson: true,
 )
 class User {
-  String userId;
+  String id;
   String email;
-  String authId;
-  String name;
-  String username;
+  String firstName;
+  String lastName;
 
   User({
-    this.userId,
+    this.id,
     this.email,
-    this.name,
-    this.authId,
-    this.username,
+    this.firstName,
+    this.lastName,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

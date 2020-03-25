@@ -8,21 +8,28 @@ class CustomTextField extends StatelessWidget {
   final bool obscure;
   final TextInputType keyboardType;
   final Function(String) validator;
+  final FocusNode focusNode;
+
+  final TextInputAction textInputAction;
 
   final TextEditingController controller;
-  final Function(String) onSave;
+  final Function(String) onChanged;
+  final Function(String) onSubmit;
   final int minLines;
   const CustomTextField({
     Key key,
     this.hint,
     this.label,
     this.controller,
-    this.onSave,
+    this.onChanged,
     this.minLines,
     this.errorText,
     this.obscure = false,
     this.validator,
     this.keyboardType,
+    this.focusNode,
+    this.textInputAction = TextInputAction.next,
+    this.onSubmit,
   }) : super(key: key);
 
   @override
@@ -41,21 +48,28 @@ class CustomTextField extends StatelessWidget {
               obscureText: obscure,
               style: medium20sp,
               controller: controller,
+              focusNode: focusNode,
+              textInputAction: textInputAction,
               minLines: minLines,
               maxLines: minLines ?? 1,
-              onSaved: onSave,
+              onChanged: onChanged,
+              onFieldSubmitted: onSubmit,
               validator: validator,
               decoration: InputDecoration(
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 hintText: hint,
+                labelText: label,
+                labelStyle: TextStyle(color: Colors.grey[600]),
                 hintStyle: medium18sp,
                 errorMaxLines: 2,
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24.0),
+                  borderSide: BorderSide(color: Colors.grey[800]),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24.0),
+                  borderSide: BorderSide(color: Colors.grey[800]),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.red),
