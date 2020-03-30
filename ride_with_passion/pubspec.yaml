@@ -51,6 +51,9 @@ dependencies:
   #https://pub.dev/packages/cached_network_image
   cached_network_image: ^2.0.0
 
+  #https://pub.dev/packages/geolocator
+  geolocator: ^5.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -71,6 +74,7 @@ flutter:
   assets:
     - assets/ic_login.png
     - assets/ic_appbar.png
+    - assets/images/
   #  - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

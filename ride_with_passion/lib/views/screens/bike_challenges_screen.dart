@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ride_with_passion/services/routes_repository.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/view_models/home_view_model.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:ride_with_passion/models/route.dart';
 
 class BikeChallangesScreen extends StatelessWidget {
   const BikeChallangesScreen({Key key}) : super(key: key);
@@ -25,21 +26,32 @@ class BikeChallangesScreen extends StatelessWidget {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              InkWell(
-                child: _buildBikeChallenge(),
-                onTap: model.onBikeChallengePressed,
-              ),
-            ],
-          ),
-        ),
+            padding: const EdgeInsets.all(16.0),
+            child: StreamBuilder(
+              stream:  RoutesRepository().routes,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<ChallengeRoute>> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data == null ? 0 : snapshot.data.length,
+                    itemBuilder: (contxt, index) {
+                      return InkWell(
+                          onTap: (){
+                            model.onChallengeDetailButtonPressed(snapshot.data[index]);
+                          },
+                          child: _buildBikeChallenge(snapshot.data[index]));
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            )),
       ),
     );
   }
 
-  _buildBikeChallenge() {
+  _buildBikeChallenge(ChallengeRoute route) {
     return Column(
       children: <Widget>[
         Stack(
@@ -58,7 +70,7 @@ class BikeChallangesScreen extends StatelessWidget {
                       topRight: Radius.circular(8)),
                   child: CachedNetworkImage(
                     imageUrl:
-                        "https://firebasestorage.googleapis.com/v0/b/ride-with-passion.appspot.com/o/csm_Radfahren-als-Berglauftrianing-SI_4b1a89d418.png?alt=media&token=1e8c9063-2dd2-4ecc-9ce5-93b54866263a",
+                        route.images.first,
                     placeholder: (context, url) => Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Align(
@@ -80,8 +92,7 @@ class BikeChallangesScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "Von Kals zum Lucknerhaus",
+                  Text(route.name,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 28,
@@ -97,7 +108,7 @@ class BikeChallangesScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 2),
                       child: Text(
-                        "MITTEL",
+                        route.difficulty,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,

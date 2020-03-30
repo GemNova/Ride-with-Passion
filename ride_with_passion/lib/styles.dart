@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 const accentColor = const Color(0XFFae1220); //#ae1220
 const primaryColor = const Color(0XFFF9F9F9); //#F9F9F9
 const textColor = const Color(0XFF64697C); //#64697C
+const blackColor = const Color(0XFF000000); //#000000
+const blackHeadingColor = const Color(0XFF444444); //#444444
+const brownColor = const Color(0xff790d16);//#790d16
 
 MaterialColor myColor = MaterialColor(0XFF81FFAD, color);
 
@@ -27,3 +30,8 @@ const TextStyle medium18sp = TextStyle(fontSize: 18, color: Colors.grey);
 const SizedBox smallSpace = SizedBox(height: 12, width: 12);
 const SizedBox mediumSpace = SizedBox(height: 24, width: 24);
 const SizedBox bigSpace = SizedBox(height: 40);
+
+const TextStyle title24sp = TextStyle(fontSize: 24, color: blackHeadingColor, letterSpacing: -0.5,
+            fontWeight: FontWeight.bold,);
+const TextStyle title18sp = TextStyle(fontSize: 18, color: blackHeadingColor, letterSpacing: -0.5,
+            fontWeight: FontWeight.bold,);            
