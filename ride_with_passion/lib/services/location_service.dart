@@ -32,7 +32,10 @@ class LocationService {
 
   Future<double> getDistance(Position positionOld, Position positionNew) async {
     final distanceInMeters = await Geolocator().distanceBetween(
-        52.2165157, 6.9437819, positionNew.latitude, positionNew.longitude);
+        positionOld.latitude,
+        positionOld.longitude,
+        positionNew.latitude,
+        positionNew.longitude);
     return distanceInMeters;
   }
 }
