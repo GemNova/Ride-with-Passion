@@ -5,7 +5,10 @@ class CustomButton extends StatelessWidget {
   CustomButton({
     Key key,
     @required this.text,
+    this.textColor = Colors.white,
     this.backGroundColor = accentColor,
+    this.borderColor = Colors.transparent,
+    this.elevation = 1.0,
     this.icon,
     this.onPressed,
     this.textFontSize = 20,
@@ -13,6 +16,9 @@ class CustomButton extends StatelessWidget {
   }) : super(key: key);
   final Color backGroundColor;
   final String text;
+  final Color textColor;
+  final double elevation;
+  final Color borderColor;
   final IconData icon;
   final Function onPressed;
   final double textFontSize;
@@ -23,8 +29,13 @@ class CustomButton extends StatelessWidget {
     return MaterialButton(
       padding: padding,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(35))),
+        borderRadius: BorderRadius.all(
+          Radius.circular(35),
+        ),
+        side: BorderSide(color: borderColor),
+      ),
       color: backGroundColor,
+      elevation: elevation,
       onPressed: () {
         if (onPressed != null) {
           onPressed();
@@ -45,7 +56,7 @@ class CustomButton extends StatelessWidget {
           Text(
             text,
             style: TextStyle(
-              color: Colors.white,
+              color: textColor,
               fontSize: textFontSize,
               letterSpacing: -0.5,
               fontWeight: FontWeight.bold,

@@ -6,7 +6,7 @@ part of 'route.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChallengeRoute _$RouteFromJson(Map json) {
+ChallengeRoute _$ChallengeRouteFromJson(Map json) {
   return ChallengeRoute(
     averageSlope: (json['averageSlope'] as num)?.toDouble(),
     startCoordinates: json['startCoordinates'] == null
@@ -29,8 +29,9 @@ ChallengeRoute _$RouteFromJson(Map json) {
     mapImage: json['mapImage'] as String,
     name: json['name'] as String,
     routeId: json['routeId'] as String,
+    elevationGain: json['elevationGain'] as int,
+    routeType: json['routeType'] as String,
     sponsorImage: json['sponsorImage'] as String,
-    elevationGain:json['elevationGain'] as int
   )
     ..routeGpxFile = json['routeGpxFile'] as String
     ..rankList = (json['rankList'] as List)
@@ -42,7 +43,8 @@ ChallengeRoute _$RouteFromJson(Map json) {
         ?.toList();
 }
 
-Map<String, dynamic> _$RouteToJson(ChallengeRoute instance) => <String, dynamic>{
+Map<String, dynamic> _$ChallengeRouteToJson(ChallengeRoute instance) =>
+    <String, dynamic>{
       'routeId': instance.routeId,
       'name': instance.name,
       'images': instance.images,
@@ -55,22 +57,27 @@ Map<String, dynamic> _$RouteToJson(ChallengeRoute instance) => <String, dynamic>
       'durationMin': instance.durationMin,
       'durationMax': instance.durationMax,
       'averageSlope': instance.averageSlope,
+      'elevationGain': instance.elevationGain,
       'startCoordinates': instance.startCoordinates?.toJson(),
       'endCoordinates': instance.endCoordinates?.toJson(),
       'routeGpxFile': instance.routeGpxFile,
+      'routeType': instance.routeType,
       'rankList': instance.rankList?.map((e) => e?.toJson())?.toList(),
-      'elevationGain':instance.elevationGain
     };
 
 Rank _$RankFromJson(Map json) {
   return Rank(
+    userId: json['userId'] as String,
+    bikeType: json['bikeType'] as String,
     userName: json['userName'] as String,
     trackedTime: json['trackedTime'] as int,
   );
 }
 
 Map<String, dynamic> _$RankToJson(Rank instance) => <String, dynamic>{
+      'userId': instance.userId,
       'userName': instance.userName,
+      'bikeType': instance.bikeType,
       'trackedTime': instance.trackedTime,
     };
 

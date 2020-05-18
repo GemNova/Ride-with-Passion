@@ -6,15 +6,17 @@ import 'package:get/get.dart';
 import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/router.dart';
 import 'package:ride_with_passion/services/auth_service.dart';
+import 'package:ride_with_passion/services/lifecycle_service.dart';
+import 'package:ride_with_passion/services/timer_service.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/screens/home_screen.dart';
 import 'package:ride_with_passion/views/screens/login_screen.dart';
-import 'package:ride_with_passion/locator.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
-
+  WidgetsBinding.instance.addObserver(LifecycleService());
+  getIt<TimerService>().startWithoutRouteId();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then(

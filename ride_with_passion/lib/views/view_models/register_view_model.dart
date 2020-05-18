@@ -12,12 +12,21 @@ class RegisterViewModel extends ChangeNotifier {
   String lastName;
   String email;
   String password;
+  String type;
+
+  bool tcValue = false;
+  bool tc1Value = false;
+
+  List<String> types = ['E-Bike', 'Bike'];
 
   bool get isButtonEnabled =>
       (lastName?.isNotEmpty ?? false) &&
       (firstName?.isNotEmpty ?? false) &&
       (password?.isNotEmpty ?? false) &&
-      (email?.isNotEmpty ?? false);
+      (email?.isNotEmpty ?? false) &&
+      (type != null) &&
+      tcValue &&
+      tc1Value;
 
   setPassword(String password) {
     this.password = password;
@@ -39,6 +48,11 @@ class RegisterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  setType(String type) {
+    this.type = type;
+    notifyListeners();
+  }
+
   onRegisterPressed() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
@@ -49,7 +63,8 @@ class RegisterViewModel extends ChangeNotifier {
               email: email,
               password: password,
               firstName: firstName,
-              lastName: lastName)
+              lastName: lastName,
+              bikeType: type)
           .then((_) {
         Get.offAllNamed(HomeRoute);
       }).catchError((error) {
@@ -65,5 +80,15 @@ class RegisterViewModel extends ChangeNotifier {
 
   void onLoginPressed() {
     Get.back();
+  }
+
+  void setTcValue(bool value) {
+    tcValue = value;
+    notifyListeners();
+  }
+
+  void setTc1Value(bool value) {
+    tc1Value = value;
+    notifyListeners();
   }
 }

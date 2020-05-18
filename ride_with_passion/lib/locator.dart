@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:ride_with_passion/services/auth_service.dart';
 import 'package:ride_with_passion/services/firebase_service.dart';
 import 'package:ride_with_passion/services/routes_repository.dart';
+import 'package:ride_with_passion/services/timer_service.dart';
 
 import 'services/location_service.dart';
 
@@ -12,4 +13,5 @@ setupLocator() {
   getIt.registerSingleton(AuthService());
   getIt.registerSingleton(LocationService());
   getIt.registerSingleton(RoutesRepository());
+  getIt.registerSingleton(TimerService());
 }

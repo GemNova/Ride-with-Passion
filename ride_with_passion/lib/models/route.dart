@@ -23,6 +23,7 @@ class ChallengeRoute {
   Coordinates startCoordinates;
   Coordinates endCoordinates;
   String routeGpxFile;
+  String routeType;
   List<Rank> rankList;
 
   ChallengeRoute({
@@ -40,11 +41,14 @@ class ChallengeRoute {
     this.name,
     this.routeId,
     this.elevationGain,
+    this.routeType,
     this.sponsorImage,
   });
 
-  factory ChallengeRoute.fromJson(Map<String, dynamic> json) => _$RouteFromJson(json);
-  Map<String, dynamic> toJson() => _$RouteToJson(this);
+  factory ChallengeRoute.fromJson(Map<String, dynamic> json) =>
+      _$ChallengeRouteFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChallengeRouteToJson(this);
 }
 
 @JsonSerializable(
@@ -52,15 +56,20 @@ class ChallengeRoute {
   explicitToJson: true,
 )
 class Rank {
+  String userId;
   String userName;
+  String bikeType;
   int trackedTime;
 
   Rank({
+    this.userId,
+    this.bikeType,
     this.userName,
     this.trackedTime,
   });
 
   factory Rank.fromJson(Map<String, dynamic> json) => _$RankFromJson(json);
+
   Map<String, dynamic> toJson() => _$RankToJson(this);
 }
 
@@ -79,5 +88,6 @@ class Coordinates {
 
   factory Coordinates.fromJson(Map<String, dynamic> json) =>
       _$CoordinatesFromJson(json);
+
   Map<String, dynamic> toJson() => _$CoordinatesToJson(this);
 }

@@ -16,7 +16,7 @@ class LocationService {
           .listen((Position position) {
         if (position != null) {
           onPositionChange(position);
-        }
+        } else {}
       });
     } catch (error) {
       print(error);
@@ -27,7 +27,6 @@ class LocationService {
     Geolocator geolocator = Geolocator()..forceAndroidLocationManager = true;
     GeolocationStatus geolocationStatus =
         await geolocator.checkGeolocationPermissionStatus();
-    print(geolocationStatus);
   }
 
   Future<double> getDistance(Position positionOld, Position positionNew) async {
@@ -37,5 +36,10 @@ class LocationService {
         positionNew.latitude,
         positionNew.longitude);
     return distanceInMeters;
+  }
+
+  Future<Position> getCurrentPosition() async {
+    return await geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 }

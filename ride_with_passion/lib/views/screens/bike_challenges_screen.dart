@@ -1,141 +1,153 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_with_passion/helper/constants.dart';
+import 'package:ride_with_passion/locator.dart';
+import 'package:ride_with_passion/services/firebase_service.dart';
 import 'package:ride_with_passion/services/routes_repository.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/view_models/home_view_model.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:ride_with_passion/models/route.dart';
+import 'package:ride_with_passion/views/widgets/app_bar_blue_widget.dart';
+import 'package:ride_with_passion/views/widgets/timer_widget.dart';
+import 'package:ride_with_passion/views/widgets/track_name_type_widget.dart';
 
 class BikeChallangesScreen extends StatelessWidget {
-  const BikeChallangesScreen({Key key}) : super(key: key);
+  const BikeChallangesScreen({Key key, this.routeType}) : super(key: key);
+
+  final RouteType routeType;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<HomeViewModel>.withConsumer(
       viewModel: HomeViewModel(),
       builder: (context, model, child) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Image.asset(
-              "assets/ic_appbar.png",
-              height: 60,
-            ),
-          ),
-        ),
-        body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: StreamBuilder(
-              stream:  RoutesRepository().routes,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<ChallengeRoute>> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data == null ? 0 : snapshot.data.length,
-                    itemBuilder: (contxt, index) {
-                      return InkWell(
-                          onTap: (){
-                            model.onChallengeDetailButtonPressed(snapshot.data[index]);
-                          },
-                          child: _buildBikeChallenge(snapshot.data[index]));
+        appBar: AppBarBlueWidget(),
+        body: Container(
+            color: backgroundColor,
+            padding: const EdgeInsets.all(32.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  TimerWidget(
+                    streamTimer: model.timerCounter,
+                    running: model.running,
+                  ),
+                  StreamBuilder(
+                    stream: model.getRoutes(routeType),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<ChallengeRoute>> snapshot) {
+                      if (snapshot.hasData) {
+                        return SingleChildScrollView(
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: snapshot.data == null
+                                ? 0
+                                : snapshot.data.length,
+                            itemBuilder: (contxt, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 8.0, bottom: 8.0),
+                                child: InkWell(
+                                    onTap: () {
+                                      model.onChallengeDetailButtonPressed(
+                                          snapshot.data[index]);
+                                    },
+                                    child: _buildBikeChallenge(
+                                        model, snapshot.data[index])),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
                     },
-                  );
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
+                  ),
+                ],
+              ),
             )),
       ),
     );
   }
 
-  _buildBikeChallenge(ChallengeRoute route) {
+  _buildBikeChallenge(HomeViewModel model, ChallengeRoute route) {
     return Column(
       children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 240,
-              child: Material(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                color: Colors.grey[300],
-                elevation: 4,
-                child: ClipRRect(
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32.0),
+          ),
+          elevation: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TrackNameTypeWidget(route),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
+                child: Text(
+                  route.name,
+                  style: title32sp,
+                ),
+              ),
+              smallSpace,
+              Container(
+                width: double.infinity,
+                height: 280,
+                child: Material(
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8)),
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        route.images.first,
-                    placeholder: (context, url) => Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: LinearProgressIndicator(
-                          backgroundColor: Colors.transparent,
-                          valueColor: AlwaysStoppedAnimation(accentColor),
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15)),
+                  color: Colors.grey[300],
+                  elevation: 4,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15)),
+                    child: CachedNetworkImage(
+                      imageUrl: route.images.first,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: LinearProgressIndicator(
+                            backgroundColor: Colors.transparent,
+                            valueColor: AlwaysStoppedAnimation(accentColor),
+                          ),
                         ),
                       ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              top: 20,
-              left: 20,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(route.name,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        letterSpacing: -0.5,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  smallSpace,
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.orange[400],
-                        borderRadius: BorderRadius.circular(40)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 2),
-                      child: Text(
-                        route.difficulty,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
+        smallSpace,
         Container(
           height: 60,
-          color: accentColor,
-          width: double.infinity,
+          width: 250,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            color: accentColor,
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: Center(
             child: Text(
-              "Details anzeigen",
+              "DETAILS ANZEIGEN",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 20,
                   letterSpacing: -0.5,
                   fontWeight: FontWeight.bold),
             ),
           ),
         ),
+        bigSpace,
       ],
     );
   }

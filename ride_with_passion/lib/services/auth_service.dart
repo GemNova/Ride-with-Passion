@@ -50,7 +50,8 @@ class AuthService with ChangeNotifier {
       {String email,
       String password,
       String firstName,
-      String lastName}) async {
+      String lastName,
+      String bikeType}) async {
     try {
       AuthResult result = await _authInstance.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -58,7 +59,8 @@ class AuthService with ChangeNotifier {
           id: result.user.uid,
           email: email,
           firstName: firstName,
-          lastName: lastName);
+          lastName: lastName,
+          bikeType: bikeType);
       _firebaseService.saveUser(user);
       return user;
     } catch (e) {

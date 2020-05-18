@@ -11,13 +11,9 @@ class User {
   String email;
   String firstName;
   String lastName;
+  String bikeType;
 
-  User({
-    this.id,
-    this.email,
-    this.firstName,
-    this.lastName,
-  });
+  User({this.id, this.email, this.firstName, this.lastName, this.bikeType});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);

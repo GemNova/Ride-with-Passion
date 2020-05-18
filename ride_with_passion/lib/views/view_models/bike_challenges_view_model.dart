@@ -1,74 +1,125 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
+import 'package:ride_with_passion/helper/constants.dart';
 import 'package:ride_with_passion/locator.dart';
+import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/router.dart';
+import 'package:ride_with_passion/services/firebase_service.dart';
 import 'package:ride_with_passion/services/location_service.dart';
+import 'package:ride_with_passion/services/routes_repository.dart';
+import 'package:ride_with_passion/services/timer_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BikeChallengesViewModel extends ChangeNotifier {
-  BikeChallengesViewModel() {
-    isOnStartLine.value = false;
-    initGeoServcie();
-    pageController = PageController();
+  final _timerService = getIt<TimerService>();
+  final _firebaseService = getIt<FirebaseService>();
+
+  int chosenIndex = 0;
+  bool isDownloading = false;
+
+  String choiceValue = 'Bike';
+
+  List<Rank> rankList = [];
+
+  List<Rank> filteredRankList = [];
+
+  BehaviorSubject<String> get timerCounter => _timerService.timerCounter;
+
+  BehaviorSubject<bool> get running => _timerService.running;
+
+  ChallengeRoute get challengeRounte => _timerService.challengeRoute;
+
+  BikeChallengesViewModel(ChallengeRoute challengeRoute) {
+    this.challengeRoute = challengeRoute;
+    ranks();
+    _currentPageIndex = 0;
   }
+
+  ChallengeRoute challengeRoute;
   PageController pageController;
-  final locationService = getIt<LocationService>();
-  double distanceFromStart = double.infinity;
-  double distanceFromEnd = double.infinity;
-  Position raceStartLocation;
-  Position raceEndLocation;
-  // bool isOnStartLine = false;
-  bool isOnEndLine = false;
-  BehaviorSubject<bool> isOnStartLine = BehaviorSubject()..add(false);
-  BehaviorSubject<bool> isMapViewOpen = BehaviorSubject()..add(false);
+  bool _isMapView = false;
+  int _currentPageIndex;
 
-  void onBikeChallengePressed() {}
+  bool get isMapView => _isMapView;
 
-  void onBikeChallengeStart() {}
+  int get currentPageIndex => _currentPageIndex;
 
-  void onBikeChallengeStartPressed() {
-    Get.toNamed(BikeChallengesStartRoute);
+  ranks() async {
+    rankList = await _firebaseService.getRanks(challengeRoute.routeId);
+    filteredRankList = rankList
+        .where((element) =>
+            element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase())
+        .toList();
+    notifyListeners();
   }
 
-  set setStartLocation(Position startPosition) {
-    raceStartLocation = startPosition;
+  onChipSelected(String value) {
+    choiceValue = value;
+    filteredRankList = rankList
+        .where((element) =>
+            element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase())
+        .toList();
+    notifyListeners();
   }
 
-  set setEndLocation(Position startPosition) {
-    raceStartLocation = startPosition;
+  onSwipe() {
+    _currentPageIndex = pageController.page.toInt();
+    notifyListeners();
   }
 
-  void initGeoServcie() {
-    locationService.getUpdateLocation((newPosition) {
-      locationService
-          .getDistance(raceEndLocation, newPosition)
-          .then((distance) {
-        print(distance);
-        if (distance < 50) {
-          isOnStartLine.value = true;
-        } else {
-          isOnStartLine.value = false;
-        }
-      });
-      locationService
-          .getDistance(raceEndLocation, newPosition)
-          .then((distance) {
-        print(distance);
-        if (distance < 50) {
-          isOnEndLine = true;
-        } else {
-          isOnEndLine = false;
-        }
-      });
-    });
+  carouselSlide(int index) {
+    this.chosenIndex = index;
+    notifyListeners();
   }
 
-  void onCrouselIconPressed(int index){
-    pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.linear);
+  Future<bool> isOngoingChallengeSame() async {
+    return _timerService.isAllowedToTimerScreen(this.challengeRoute);
   }
 
-  void toggleMapViewPage(bool value){
-    isMapViewOpen.add(value);
+  void onBikeChallengeStartPressed(ChallengeRoute challengeRoute) async {
+    bool isSettingTimerEmpty = await _timerService.isSettingTimerEmpty();
+    if (!isSettingTimerEmpty || _timerService.running.value) {
+      Get.toNamed(BikeChallengesTimerRoute, arguments: challengeRoute);
+    } else {
+      Get.toNamed(BikeChallengesStartRoute, arguments: challengeRoute);
+    }
+  }
+
+  onPrevImagePressed() {
+    _currentPageIndex = _currentPageIndex == 0 ? 0 : _currentPageIndex - 1;
+    _slideToAnotherImage();
+  }
+
+  onNextImagePressed() {
+    _currentPageIndex = _currentPageIndex == challengeRoute.images.length - 1
+        ? challengeRoute.images.length - 1
+        : _currentPageIndex + 1;
+    _slideToAnotherImage();
+  }
+
+  _slideToAnotherImage() {
+    pageController.animateToPage(_currentPageIndex,
+        duration: Duration(milliseconds: 500), curve: Curves.linear);
+    notifyListeners();
+  }
+
+  void toggleMapViewPage(bool value) {
+    _isMapView = value;
+    notifyListeners();
+  }
+
+  onDownloadGpxFilePressed() async {
+    isDownloading = true;
+    notifyListeners();
+    File file = await getIt<FirebaseService>()
+        .downloadFile(challengeRoute.routeGpxFile);
+
+    isDownloading = false;
+    notifyListeners();
+    OpenFile.open(file.path);
   }
 }

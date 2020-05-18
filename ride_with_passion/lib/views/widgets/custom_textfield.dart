@@ -57,27 +57,27 @@ class CustomTextField extends StatelessWidget {
               validator: validator,
               decoration: InputDecoration(
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 hintText: hint,
                 labelText: label,
-                labelStyle: TextStyle(color: Colors.grey[600]),
+                labelStyle: TextStyle(color: Colors.grey[300]),
                 hintStyle: medium18sp,
                 errorMaxLines: 2,
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24.0),
+                  borderRadius: BorderRadius.circular(40.0),
                   borderSide: BorderSide(color: Colors.grey[800]),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24.0),
+                  borderRadius: BorderRadius.circular(40.0),
                   borderSide: BorderSide(color: Colors.grey[800]),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.red),
-                  borderRadius: BorderRadius.circular(24.0),
+                  borderRadius: BorderRadius.circular(40.0),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.red),
-                  borderRadius: BorderRadius.circular(24.0),
+                  borderRadius: BorderRadius.circular(40.0),
                 ),
               ),
             ),

@@ -7,9 +7,9 @@ class CustomCard extends StatelessWidget {
   final double hPadding;
   final double vPadding;
   final EdgeInsetsGeometry margin;
-  double blurRadius = 5;
-  double spreadRadius = 1;
-  double offset = 2;
+  final double blurRadius = 5;
+  final double spreadRadius = 1;
+  final double offset = 2;
 
   CustomCard({
     Key key,
@@ -18,7 +18,7 @@ class CustomCard extends StatelessWidget {
     this.radius = 5,
     this.hPadding = 0,
     this.vPadding = 0,
-     this.margin = const EdgeInsets.all(0),
+    this.margin = const EdgeInsets.all(0),
   }) : super(key: key);
 
   @override

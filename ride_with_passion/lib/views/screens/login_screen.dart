@@ -19,57 +19,58 @@ class LoginScreen extends StatelessWidget {
         body: Column(
           children: <Widget>[
             Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Image.asset("assets/ic_login.png"),
-                )),
+              flex: 7,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(50, 32, 50, 0),
+                child: Image.asset("assets/ic_login.png"),
+              ),
+            ),
             Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Form(
-                  key: model.formKey,
-                  child: ListView(
-                    physics: BouncingScrollPhysics(),
-                    padding: const EdgeInsets.all(32.0),
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      CustomTextField(
-                        label: "Email",
-                        hint: "Email",
-                        onSubmit: (_) => FocusScope.of(context)
-                            .requestFocus(passwordFocusNode),
-                        onChanged: model.setEmail,
-                        validator: (email) => isEmail(email.trim())
-                            ? null
-                            : "Keine gültige Email",
-                      ),
-                      smallSpace,
-                      CustomTextField(
-                        label: "Passwort",
-                        hint: "Passwort",
-                        obscure: true,
-                        focusNode: passwordFocusNode,
-                        onSubmit: (_) {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          model.onLoginPressed();
-                        },
-                        onChanged: model.setPassword,
-                        validator: (password) {
-                          Pattern pattern =
-                              r'^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$';
-                          RegExp regex = new RegExp(pattern);
-                          if (!regex.hasMatch(password))
-                            return 'Das Passwort muss mindestens 6 Buchstaben lang sein und mind 1 Zahl beinhalten!';
-                          else
-                            return null;
-                        },
-                        keyboardType: TextInputType.visiblePassword,
-                      ),
-                      smallSpace,
-                      model.isLoading
-                          ? CustomLoadingIndicator()
-                          : FlatButton(
+              flex: 10,
+              child: Form(
+                key: model.formKey,
+                child: ListView(
+                  physics: BouncingScrollPhysics(),
+                  padding: const EdgeInsets.fromLTRB(32, 0, 32, 32),
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    CustomTextField(
+                      label: "Email",
+                      hint: "Email",
+                      onSubmit: (_) => FocusScope.of(context)
+                          .requestFocus(passwordFocusNode),
+                      onChanged: model.setEmail,
+                      validator: (email) =>
+                          isEmail(email.trim()) ? null : "Keine gültige Email",
+                    ),
+                    smallSpace,
+                    CustomTextField(
+                      label: "Passwort",
+                      hint: "Passwort",
+                      obscure: true,
+                      focusNode: passwordFocusNode,
+                      onSubmit: (_) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        model.onLoginPressed();
+                      },
+                      onChanged: model.setPassword,
+                      validator: (password) {
+                        Pattern pattern =
+                            r'^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$';
+                        RegExp regex = new RegExp(pattern);
+                        if (!regex.hasMatch(password))
+                          return 'Das Passwort muss mindestens 6 Buchstaben lang sein und mind 1 Zahl beinhalten!';
+                        else
+                          return null;
+                      },
+                      keyboardType: TextInputType.visiblePassword,
+                    ),
+                    hugeSpace,
+                    model.isLoading
+                        ? CustomLoadingIndicator()
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            child: FlatButton(
                               color: accentColor,
                               shape: StadiumBorder(
                                   side: BorderSide(color: Colors.transparent)),
@@ -87,26 +88,26 @@ class LoginScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                      bigSpace,
-                      Center(
-                        child: Text(
-                          "Neu hier?",
-                          style: TextStyle(fontSize: 16, color: accentColor),
-                        ),
+                          ),
+                    hugeSpace,
+                    Center(
+                      child: Text(
+                        "Neu hier?",
+                        style: TextStyle(fontSize: 16, color: accentColor),
                       ),
-                      Center(
-                        child: InkWell(
-                          onTap: model.onRegisterPressed,
-                          child: Text("Registrieren",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: accentColor,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline)),
-                        ),
+                    ),
+                    Center(
+                      child: InkWell(
+                        onTap: model.onRegisterPressed,
+                        child: Text("Registrieren",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: accentColor,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline)),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             )
