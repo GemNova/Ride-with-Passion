@@ -16,7 +16,7 @@ class BikeChallengeTimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<BikeChallengeTimerViewModel>.withConsumer(
-      viewModel: BikeChallengeTimerViewModel(this.challengeRoute),
+      viewModelBuilder: () => BikeChallengeTimerViewModel(this.challengeRoute),
       builder: (context, model, child) => Scaffold(
         appBar: AppBarBlueWidget(),
         body: Container(

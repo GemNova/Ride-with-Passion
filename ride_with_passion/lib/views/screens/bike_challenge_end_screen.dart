@@ -15,7 +15,7 @@ class BikeChallengeEndScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<BikeChallengeEndViewModel>.withConsumer(
-      viewModel: BikeChallengeEndViewModel(),
+      viewModelBuilder: () => BikeChallengeEndViewModel(),
       onModelReady: (model) {
         model.initUserRank(route, "");
       },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider_architecture/provider_widget.dart';
+import 'package:provider_architecture/provider_architecture.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/view_models/register_view_model.dart';
 

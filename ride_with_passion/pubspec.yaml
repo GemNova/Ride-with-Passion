@@ -22,7 +22,7 @@ dependencies:
   get: ^2.0.10
 
   #https://pub.dev/packages/provider_architecture
-  provider_architecture: ^1.0.6
+  provider_architecture: ^1.1.1+1
 
   #https://pub.dev/packages/logger
   logger: ^0.8.3

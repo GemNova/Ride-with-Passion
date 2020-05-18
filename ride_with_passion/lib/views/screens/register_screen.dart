@@ -19,7 +19,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<RegisterViewModel>.withConsumer(
-      viewModel: RegisterViewModel(),
+      viewModelBuilder: () => RegisterViewModel(),
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
         body: Padding(

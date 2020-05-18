@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<HomeViewModel>.withConsumer(
-      viewModel: HomeViewModel(),
+      viewModelBuilder: () => HomeViewModel(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(239, 236, 219, 1),
