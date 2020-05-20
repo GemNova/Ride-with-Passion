@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/models/challenge.dart';
+import 'package:ride_with_passion/services/firebase_service.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/view_models/bike_challenge_end_viewmodel.dart';
 import 'package:provider_architecture/provider_architecture.dart';
@@ -24,21 +26,36 @@ class BikeChallengeEndScreen extends StatelessWidget {
         body: Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: ListView(
             children: <Widget>[
               _title(),
               _description(),
               bigSpace,
               Text(
                 "Deine Rundenzeit: ${getTIme()}",
+                textAlign: TextAlign.center,
                 style: title24sp.copyWith(fontWeight: FontWeight.w400),
               ),
-              Text(
-                "Rang: #${getRank(model)}",
-                style: title24sp,
+              smallSpace,
+              FutureBuilder(
+                future: getRank(model),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      "Rang: #${snapshot.data}",
+                      textAlign: TextAlign.center,
+                      style: title24sp,
+                    );
+                  } else {
+                    return Text(
+                      "Berechne Rang...",
+                      textAlign: TextAlign.center,
+                      style: title24sp,
+                    );
+                  }
+                },
               ),
-              Spacer(),
+              bigSpace,
               _completeButton(model),
               bigSpace,
             ],
@@ -51,7 +68,7 @@ class BikeChallengeEndScreen extends StatelessWidget {
   Widget _title() {
     return Column(
       children: <Widget>[
-        hugeSpace,
+        bigSpace,
         TextTitleTopWidget(),
         smallSpace,
         ChallengeNameTextWidget(challengeName: route.challengeName),
@@ -92,13 +109,14 @@ class BikeChallengeEndScreen extends StatelessWidget {
     return time;
   }
 
-  int getRank(BikeChallengeEndViewModel viewModel) {
+  Future<int> getRank(BikeChallengeEndViewModel viewModel) async {
     // final int timeInMili = route.duration.inMilliseconds;
     // final rank = Rank(trackedTime: timeInMili, userName: "");
-    final list = List.from(route.rankList);
-    list.add(viewModel.userRank);
-    list.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
-    final index = list.indexOf(viewModel.userRank);
+    final ranks = await getIt<FirebaseService>().getRanks(route.trackId);
+    ranks.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
+    final rank = ranks
+        .firstWhere((element) => element.userId == viewModel.userRank.userId);
+    final index = ranks.indexOf(rank);
 
     /// 1 is added to index because list is strted from 0th index
     return index + 1;

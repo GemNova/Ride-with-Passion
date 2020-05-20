@@ -31,9 +31,9 @@ class BikeChallangesDetailScreen extends StatelessWidget {
         body: Container(
           color: backgroundColor,
           width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.fromLTRB(24, 4, 24, 32),
           child: model.isMapView
-              ? _mapViewBody(model)
+              ? _mapViewBody(model, context)
               : SingleChildScrollView(
                   child: _challengeDetailBody(context, model)),
         ),
@@ -104,10 +104,9 @@ class BikeChallangesDetailScreen extends StatelessWidget {
               }
             }
             return CustomButton(
-              text: 'Another Challenge is ongoing',
+              text: 'Es läuft bereits eine andere Challenge',
               backGroundColor: disabledColor,
-              icon: Icons.close,
-              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               onPressed: null,
             );
           },
@@ -391,64 +390,70 @@ class BikeChallangesDetailScreen extends StatelessWidget {
             return dividerOrangeText();
           },
           itemBuilder: (context, index) {
-            if (model.filteredRankList.length != 1 &&
-                (index == 0 || index == model.filteredRankList.length + 1)) {
-              return Container(); // zero height: not visible
-            }
-            return Row(
+            // if (model.filteredRankList.length != 1 &&
+            //     (index == 0 || index == model.filteredRankList.length + 1)) {
+            //   return Container(); // zero height: not visible
+            // }
+            final rank = model.filteredRankList[index];
+            return Column(
               children: <Widget>[
-                Text(
-                  '${model.filteredRankList.length == 1 ? index + 1 : index}.',
-                  style: title18cb,
+                if (index == 0) dividerOrangeText(),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      '${index + 1}.',
+                      style: title18cb,
+                    ),
+                    mediumSpace,
+                    Expanded(
+                      child: Text(
+                        rank.userName,
+                        style: medium18cb,
+                      ),
+                    ),
+                    Text(
+                      '${Duration(milliseconds: rank.trackedTime).toString().split('.')[0]}',
+                      style:
+                          medium18sp.copyWith(color: blackColor, fontSize: 16),
+                    )
+                  ],
                 ),
-                mediumSpace,
-                Expanded(
-                  child: Text(
-                    model
-                        .rankList[model.filteredRankList.length == 1
-                            ? index
-                            : index - 1]
-                        .userName,
-                    style: medium18cb,
-                  ),
-                ),
-                Text(
-                  '${Duration(milliseconds: model.filteredRankList[model.filteredRankList.length == 1 ? index : index - 1].trackedTime).toString().split('.')[0]}',
-                  style: medium18sp.copyWith(color: blackColor, fontSize: 16),
-                )
               ],
             );
           }),
     );
   }
 
-  Widget _mapViewBody(BikeChallengesViewModel model) {
+  Widget _mapViewBody(BikeChallengesViewModel model, BuildContext context) {
     return Column(
       children: <Widget>[
         mediumSpace,
         TextTitleTopWidget(),
         smallSpace,
         ChallengeNameTextWidget(challengeName: route.name),
-        mediumSpace,
+        Spacer(),
         Container(
-            margin: EdgeInsets.all(20),
-            height: 350,
-            child: PhotoView(
-                backgroundDecoration: BoxDecoration(color: Colors.transparent),
-                maxScale: PhotoViewComputedScale.covered * 2.0,
-                minScale: PhotoViewComputedScale.contained * 0.8,
-                initialScale: PhotoViewComputedScale.contained,
-                imageProvider: CachedNetworkImageProvider(route.mapImage))),
-        bigSpace,
-        Container(
-          width: 250,
-          height: 60,
-          child: CustomButton(
-            text: 'ZURÜCK',
-            icon: Icons.keyboard_arrow_left,
-            padding: EdgeInsets.symmetric(vertical: 12),
-            backGroundColor: accentColor,
-            onPressed: () => model.toggleMapViewPage(false),
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: PhotoView(
+              backgroundDecoration: BoxDecoration(color: Colors.transparent),
+              maxScale: PhotoViewComputedScale.covered * 2.0,
+              minScale: PhotoViewComputedScale.contained * 0.8,
+              initialScale: PhotoViewComputedScale.contained,
+              imageProvider: CachedNetworkImageProvider(route.mapImage)),
+        ),
+        Spacer(),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: 250,
+            height: 60,
+            child: CustomButton(
+              text: 'ZURÜCK',
+              icon: Icons.keyboard_arrow_left,
+              padding: EdgeInsets.symmetric(vertical: 12),
+              backGroundColor: accentColor,
+              onPressed: () => model.toggleMapViewPage(false),
+            ),
           ),
         ),
       ],

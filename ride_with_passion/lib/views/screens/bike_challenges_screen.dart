@@ -26,7 +26,7 @@ class BikeChallangesScreen extends StatelessWidget {
         appBar: AppBarBlueWidget(),
         body: Container(
             color: backgroundColor,
-            padding: const EdgeInsets.all(32.0),
+            padding: const EdgeInsets.fromLTRB(24, 4, 24, 32),
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[

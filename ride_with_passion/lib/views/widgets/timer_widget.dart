@@ -29,12 +29,14 @@ class TimerWidget extends StatelessWidget {
                         ? Container()
                         : Container(
                             margin: EdgeInsets.only(bottom: 10),
-                            color: accentColor,
+                            decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(12)),
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Center(
                                 child: Text(
-                                  'Route on progress. ${challengeRoute.name} ${snapshot.data}',
+                                  'Challenge läuft! ${challengeRoute.name} ${snapshot.data}',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,

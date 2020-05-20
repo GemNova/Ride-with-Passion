@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -50,6 +52,7 @@ class BikeChallengeStartScreen extends StatelessWidget {
           _description(),
           smallSpace,
           _googleMap(model),
+          mediumSpace,
         ],
       ),
     );
@@ -59,9 +62,17 @@ class BikeChallengeStartScreen extends StatelessWidget {
     return model.raceStartLocation == null
         ? Container()
         : Container(
-            height: 300,
+            height: 400,
             child: GoogleMap(
-              myLocationButtonEnabled: true,
+              gestureRecognizers: Set()
+                ..add(
+                    Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+                ..add(Factory<ScaleGestureRecognizer>(
+                    () => ScaleGestureRecognizer()))
+                ..add(
+                    Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+                ..add(Factory<VerticalDragGestureRecognizer>(
+                    () => VerticalDragGestureRecognizer())),
               myLocationEnabled: true,
               initialCameraPosition: CameraPosition(
                 target: model.raceLatLng(),

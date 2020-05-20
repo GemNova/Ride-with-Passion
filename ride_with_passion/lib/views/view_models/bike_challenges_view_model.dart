@@ -50,10 +50,9 @@ class BikeChallengesViewModel extends ChangeNotifier {
 
   ranks() async {
     rankList = await _firebaseService.getRanks(challengeRoute.routeId);
-    filteredRankList = rankList
-        .where((element) =>
-            element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase())
-        .toList();
+    filteredRankList = rankList.where((element) {
+      return element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase();
+    }).toList();
     notifyListeners();
   }
 

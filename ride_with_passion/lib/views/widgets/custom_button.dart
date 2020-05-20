@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_with_passion/styles.dart';
 
@@ -41,28 +42,41 @@ class CustomButton extends StatelessWidget {
           onPressed();
         }
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          icon == null
-              ? SizedBox.shrink()
-              : Icon(
-                  icon,
-                  color: Colors.white,
+      child: Container(
+        width: double.infinity,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            icon == null
+                ? SizedBox.shrink()
+                : Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Icon(
+                        icon,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+            Expanded(
+              child: Center(
+                child: AutoSizeText(
+                  text,
+                  minFontSize: 10,
+                  maxFontSize: 18,
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: textFontSize,
+                    letterSpacing: -0.5,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontSize: textFontSize,
-              letterSpacing: -0.5,
-              fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

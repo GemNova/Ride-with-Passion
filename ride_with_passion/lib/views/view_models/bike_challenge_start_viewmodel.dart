@@ -53,7 +53,7 @@ class BikeChallengeStartViewModel extends ChangeNotifier {
     _positionStream.value = await _locationService.getCurrentPosition();
     final initDistance = await _locationService.getDistance(
         raceStartLocation, positionStream.value);
-    isOnStartLine.value = await FunctionUtils.isDoubleBelow(initDistance);
+    isOnStartLine.value = await FunctionUtils.isDoubleBelow(5);
 
     _locationService.getUpdateLocation((newPosition) {
       _positionStream.add(newPosition);
@@ -74,6 +74,7 @@ class BikeChallengeStartViewModel extends ChangeNotifier {
   @override
   void dispose() {
     isOnStartLine.close();
+    _positionStream.close();
     super.dispose();
   }
 }

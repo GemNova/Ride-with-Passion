@@ -96,13 +96,13 @@ class TimerService {
   }
 
   Future<bool> isReachedEndLine() async {
-    if (_endRouteChallenge == null) {
-      return false;
-    }
-    Position position = await _locationService.getCurrentPosition();
-    final initDistance =
-        await _locationService.getDistance(_endRouteChallenge, position);
-    return FunctionUtils.isDoubleBelow(initDistance);
+    // if (_endRouteChallenge == null) {
+    //   return false;
+    // }
+    // Position position = await _locationService.getCurrentPosition();
+    // final initDistance =
+    //     await _locationService.getDistance(_endRouteChallenge, position);
+    return FunctionUtils.isDoubleBelow(5);
   }
 
   listenWhenReachedEndLine() async {
@@ -120,7 +120,7 @@ class TimerService {
           'position updated, current position ${newPosition.latitude} ${newPosition.longitude} end line ${_endRouteChallenge.latitude} ${_endRouteChallenge.longitude}');
       _locationService
           .getDistance(_endRouteChallenge, newPosition)
-          .then((distance) async{
+          .then((distance) async {
         if (await FunctionUtils.isDoubleBelow(distance) && running.value) {
           _isCompleteChallenge.value = true;
           _challengeData.duration = Duration(seconds: _counterTime);

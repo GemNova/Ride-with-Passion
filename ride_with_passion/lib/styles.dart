@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const accentColor = const Color(0XFFEE4420); //#ae1220
-const primaryColor = const Color(0XFF002A31); //#F9F9F9
+const accentColor = const Color(0XFFEE4420); //#EE4420
+const primaryColor = const Color(0XFF002A31); //#002A31
 const backgroundColor = const Color(0XFFEFECDB); //#ae1220
 const textColor = const Color(0XFF64697C); //#64697C
 const textColorSecondary = const Color(0XFF002A31); //#64697C
@@ -58,7 +58,7 @@ const TextStyle title48sp = TextStyle(
   fontWeight: FontWeight.bold,
 );
 const TextStyle title60sp = TextStyle(
-  fontSize: 60,
+  fontSize: 50,
   color: blackHeadingColor,
   letterSpacing: -0.5,
   fontWeight: FontWeight.bold,

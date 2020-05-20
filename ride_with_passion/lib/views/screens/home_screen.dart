@@ -31,9 +31,8 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.fromLTRB(24, 4, 24, 32),
+          child: ListView(
             children: <Widget>[
               TimerWidget(
                 streamTimer: model.timerCounter,
