@@ -118,19 +118,6 @@ class RegisterScreen extends StatelessWidget {
                               ),
                             ),
                       bigSpace,
-
-                      /*bigSpace,
-                      Center(
-                        child: InkWell(
-                          onTap: model.onLoginPressed,
-                          child: Text("Zum Login",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: accentColor,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline)),
-                        ),
-                      ),*/
                     ],
                   ),
                 ),
@@ -149,8 +136,8 @@ class RegisterScreen extends StatelessWidget {
         focusNode: typeFocusNode,
         isExpanded: true,
         hint: Text(
-          'Choose Bike Type',
-          style: TextStyle(color: Colors.grey[300]),
+          'Rad-Typ auswählen',
+          style: TextStyle(color: Colors.grey[500]),
         ),
         value: model.type,
         onChanged: model.setType,
