@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Ride with Passion"
+        android:label="Bikechallenge Tirol"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDHj1uTpl0pbSrL1IrBSw2qZXEIumyHeao"/>
