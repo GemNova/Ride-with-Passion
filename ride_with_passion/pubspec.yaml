@@ -1,7 +1,7 @@
 name: ride_with_passion
 description: A new Flutter project.
 
-version: 1.0.0+01000001
+version: 1.0.0+01000004
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -89,7 +89,7 @@ dev_dependencies:
 flutter_icons:
   ios: true
   android: true
-  image_path: "assets/images/bike_challenges.png"
+  image_path: "assets/app_icon.jpg"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -104,6 +104,7 @@ flutter:
   assets:
     - assets/ic_login.png
     - assets/ic_appbar.png
+    - assets/app_icon.jpg
     - assets/bike_icon.png
     - assets/images/
   #  - images/a_dot_ham.jpeg
