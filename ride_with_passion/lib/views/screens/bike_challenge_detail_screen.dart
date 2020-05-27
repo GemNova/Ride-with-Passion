@@ -284,7 +284,7 @@ class BikeChallangesDetailScreen extends StatelessWidget {
                 '${route.startCoordinates.lat}, ${route.startCoordinates.lon}'),
             dividerOrangeText(),
             _textData('Koordinaten End',
-                '${route.startCoordinates.lat}, ${route.startCoordinates.lon}'),
+                '${route.endCoordinates.lat}, ${route.endCoordinates.lon}'),
           ],
         ),
       ),

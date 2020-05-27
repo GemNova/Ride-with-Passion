@@ -96,13 +96,13 @@ class TimerService {
   }
 
   Future<bool> isReachedEndLine() async {
-    // if (_endRouteChallenge == null) {
-    //   return false;
-    // }
-    // Position position = await _locationService.getCurrentPosition();
-    // final initDistance =
-    //     await _locationService.getDistance(_endRouteChallenge, position);
-    return FunctionUtils.isDoubleBelow(5);
+    if (_endRouteChallenge == null) {
+      return false;
+    }
+    Position position = await _locationService.getCurrentPosition();
+    final initDistance =
+        await _locationService.getDistance(_endRouteChallenge, position);
+    return FunctionUtils.isDoubleBelow(initDistance);
   }
 
   listenWhenReachedEndLine() async {
