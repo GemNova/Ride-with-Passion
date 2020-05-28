@@ -1,7 +1,7 @@
 name: ride_with_passion
 description: A new Flutter project.
 
-version: 1.0.0+01000005
+version: 1.0.1+01000101
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
