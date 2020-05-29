@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ride_with_passion/logger.dart';
+import 'package:ride_with_passion/models/partner.dart';
 import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/models/user.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +21,10 @@ class FirebaseService {
         in _fireStoreInstance.collection("routes").snapshots()) {
       final list =
           data.documents.map((d) => ChallengeRoute.fromJson(d.data)).toList();
+      //put featured route on top
+      list.sort((a, b) {
+        return b.compareTo(a);
+      });
       yield list;
     }
   }
@@ -52,6 +57,19 @@ class FirebaseService {
     final doc =
         await _fireStoreInstance.collection("users").document(user.uid).get();
     return User.fromJson(doc.data);
+  }
+
+  Future<List<Partner>> getPartner() async {
+    final documents =
+        await _fireStoreInstance.collection("partner").getDocuments();
+    List<Partner> partners = [];
+    documents.documents.forEach((element) {
+      final partner = Partner.fromJson(element.data);
+      logger.i(partner);
+      partners.add(partner);
+      logger.i(partners.length);
+    });
+    return partners;
   }
 
   Future<double> getMinimumMeter() async {

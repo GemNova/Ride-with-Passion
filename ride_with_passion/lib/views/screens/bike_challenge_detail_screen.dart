@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:ride_with_passion/function_utils.dart';
 import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/view_models/bike_challenges_view_model.dart';
@@ -53,9 +55,9 @@ class BikeChallangesDetailScreen extends StatelessWidget {
         _buildChallengeDiffType(),
         _headerButton(model, route),
         _informationCard(context, model, route),
-        SponsorCardWidget(route: route),
         _graphCard(route, model),
-        _rankCard(route, model)
+        _rankCard(route, model),
+        SponsorCardWidget(route: route),
       ],
     );
   }
@@ -172,9 +174,13 @@ class BikeChallangesDetailScreen extends StatelessWidget {
               : Container(),
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Text(
-              route.description,
-              style: small14sp.copyWith(color: textColorSecondary, height: 1.5),
+            child: Linkify(
+              onOpen: (link) => FunctionUtils.launchURL(link.url),
+              text: route.description,
+              linkStyle: small14sp.copyWith(
+                  fontSize: 16, color: accentColor, height: 1.5),
+              style: small14sp.copyWith(
+                  fontSize: 16, color: textColorSecondary, height: 1.5),
             ),
           ),
           bigSpace,
@@ -280,11 +286,6 @@ class BikeChallangesDetailScreen extends StatelessWidget {
             dividerOrangeText(),
             _textData('Durchschnittliche Steigung', '${route.averageSlope} %'),
             dividerOrangeText(),
-            _textData('Koordinaten Start',
-                '${route.startCoordinates.lat}, ${route.startCoordinates.lon}'),
-            dividerOrangeText(),
-            _textData('Koordinaten End',
-                '${route.endCoordinates.lat}, ${route.endCoordinates.lon}'),
           ],
         ),
       ),

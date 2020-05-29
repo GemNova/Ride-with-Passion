@@ -2,9 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_with_passion/helper/constants.dart';
-import 'package:ride_with_passion/locator.dart';
-import 'package:ride_with_passion/services/firebase_service.dart';
-import 'package:ride_with_passion/services/routes_repository.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/view_models/home_view_model.dart';
 import 'package:provider_architecture/provider_architecture.dart';
@@ -40,26 +37,29 @@ class BikeChallangesScreen extends StatelessWidget {
                         AsyncSnapshot<List<ChallengeRoute>> snapshot) {
                       if (snapshot.hasData) {
                         return SingleChildScrollView(
-                          child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data == null
-                                ? 0
-                                : snapshot.data.length,
-                            itemBuilder: (contxt, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, bottom: 8.0),
-                                child: InkWell(
-                                    onTap: () {
-                                      model.onChallengeDetailButtonPressed(
-                                          snapshot.data[index]);
-                                    },
-                                    child: _buildBikeChallenge(
-                                        model, snapshot.data[index])),
-                              );
-                            },
-                          ),
+                          child: snapshot.data.length == 0
+                              ? _buildEmptyScreen()
+                              : ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data == null
+                                      ? 0
+                                      : snapshot.data.length,
+                                  itemBuilder: (contxt, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, bottom: 8.0),
+                                      child: InkWell(
+                                          onTap: () {
+                                            model
+                                                .onChallengeDetailButtonPressed(
+                                                    snapshot.data[index]);
+                                          },
+                                          child: _buildBikeChallenge(
+                                              model, snapshot.data[index])),
+                                    );
+                                  },
+                                ),
                         );
                       } else {
                         return CircularProgressIndicator();
@@ -71,6 +71,17 @@ class BikeChallangesScreen extends StatelessWidget {
             )),
       ),
     );
+  }
+
+  _buildEmptyScreen() {
+    return Center(
+        child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        "Kommt in Kürze!",
+        style: title32sp,
+      ),
+    ));
   }
 
   _buildBikeChallenge(HomeViewModel model, ChallengeRoute route) {
@@ -138,7 +149,7 @@ class BikeChallangesScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Center(
             child: Text(
-              "DETAILS ANZEIGEN",
+              "DETAILS",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,

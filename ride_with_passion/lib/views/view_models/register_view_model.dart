@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/router.dart';
 import 'package:ride_with_passion/services/auth_service.dart';
+import 'package:ride_with_passion/views/screens/onboarding_screen.dart';
 
 class RegisterViewModel extends ChangeNotifier {
   bool isLoading = false;
@@ -67,6 +68,7 @@ class RegisterViewModel extends ChangeNotifier {
               bikeType: type)
           .then((_) {
         Get.offAllNamed(HomeRoute);
+        Get.dialog(OnboardingScreen());
       }).catchError((error) {
         return Get.snackbar("Da ist wohl etwas schiefgelaufen", error);
       }).whenComplete(() {

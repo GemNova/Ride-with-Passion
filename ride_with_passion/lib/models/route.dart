@@ -17,6 +17,7 @@ class ChallengeRoute {
   String difficulty;
   double length;
   int durationMin;
+  bool featured;
   int durationMax;
   double averageSlope;
   int elevationGain;
@@ -90,4 +91,22 @@ class Coordinates {
       _$CoordinatesFromJson(json);
 
   Map<String, dynamic> toJson() => _$CoordinatesToJson(this);
+}
+
+extension CompareExtension on ChallengeRoute {
+  int compareTo(other) {
+    if (this.featured == null || other == null) {
+      return null;
+    }
+
+    if (this.featured) {
+      return 1;
+    }
+
+    if (!this.featured) {
+      return -1;
+    }
+
+    return null;
+  }
 }

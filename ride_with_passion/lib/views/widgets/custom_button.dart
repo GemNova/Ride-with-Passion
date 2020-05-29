@@ -64,7 +64,7 @@ class CustomButton extends StatelessWidget {
                 child: AutoSizeText(
                   text,
                   minFontSize: 10,
-                  maxFontSize: 18,
+                  maxFontSize: 24,
                   maxLines: 1,
                   style: TextStyle(
                     color: textColor,

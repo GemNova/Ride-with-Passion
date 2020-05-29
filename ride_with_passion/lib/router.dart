@@ -6,6 +6,7 @@ import 'package:ride_with_passion/views/screens/bike_challenge_timer_screen.dart
 import 'package:ride_with_passion/views/screens/bike_challenges_screen.dart';
 import 'package:ride_with_passion/views/screens/home_screen.dart';
 import 'package:ride_with_passion/views/screens/login_screen.dart';
+import 'package:ride_with_passion/views/screens/partner_screen.dart';
 import 'package:ride_with_passion/views/screens/register_screen.dart';
 
 import 'views/screens/bike_challenge_detail_screen.dart';
@@ -18,6 +19,7 @@ const String BikeChallengesDetailRoute = '/bike_challenge_detail';
 const String BikeChallengesStartRoute = '/bike_challenge_start';
 const String BikeChallengesTimerRoute = '/bike_challenge_timer';
 const String BikeChallengesEndRoute = '/bike_challenge_end';
+const String PartnerRoute = '/partner';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -51,6 +53,8 @@ class Router {
         return GetRouteBase(
             settings: settings,
             page: BikeChallengeEndScreen(route: settings.arguments));
+      case PartnerRoute:
+        return GetRouteBase(settings: settings, page: PartnerScreen());
       case HomeRoute:
         return GetRouteBase(
           settings: settings,

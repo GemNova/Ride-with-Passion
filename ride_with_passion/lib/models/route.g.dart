@@ -33,6 +33,7 @@ ChallengeRoute _$ChallengeRouteFromJson(Map json) {
     routeType: json['routeType'] as String,
     sponsorImage: json['sponsorImage'] as String,
   )
+    ..featured = json['featured'] as bool
     ..routeGpxFile = json['routeGpxFile'] as String
     ..rankList = (json['rankList'] as List)
         ?.map((e) => e == null
@@ -55,6 +56,7 @@ Map<String, dynamic> _$ChallengeRouteToJson(ChallengeRoute instance) =>
       'difficulty': instance.difficulty,
       'length': instance.length,
       'durationMin': instance.durationMin,
+      'featured': instance.featured,
       'durationMax': instance.durationMax,
       'averageSlope': instance.averageSlope,
       'elevationGain': instance.elevationGain,

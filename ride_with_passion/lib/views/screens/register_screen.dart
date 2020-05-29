@@ -78,11 +78,8 @@ class RegisterScreen extends StatelessWidget {
                         onSubmit: (_) =>
                             FocusScope.of(context).requestFocus(typeFocusNode),
                         validator: (password) {
-                          Pattern pattern =
-                              r'^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$';
-                          RegExp regex = new RegExp(pattern);
-                          if (!regex.hasMatch(password))
-                            return 'Das Passwort muss mindestens 6 Buchstaben lang sein und mind 1 Zahl beinhalten!';
+                          if (password.length < 6)
+                            return 'Das Passwort muss mindestens 6 Buchstaben lang sein';
                           else
                             return null;
                         },

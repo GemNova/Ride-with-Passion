@@ -33,7 +33,13 @@ class HomeViewModel extends ChangeNotifier {
           .where((element) =>
               element.routeType.toLowerCase() == routeName.toLowerCase())
           .toList();
+
+      //put featured route on top
+      challengeRoutes.sort((a, b) {
+        return b.compareTo(a);
+      });
       _filteredRoutes.add(challengeRoutes);
+
       return _filteredRoutes;
     }
   }
@@ -48,5 +54,9 @@ class HomeViewModel extends ChangeNotifier {
 
   void onChallengeDetailButtonPressed(ChallengeRoute challengeRoute) {
     Get.toNamed(BikeChallengesDetailRoute, arguments: challengeRoute);
+  }
+
+  void onPartnerPressed() {
+    Get.toNamed(PartnerRoute);
   }
 }

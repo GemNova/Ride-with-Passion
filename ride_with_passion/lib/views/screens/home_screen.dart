@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:ride_with_passion/helper/constants.dart';
 import 'package:ride_with_passion/styles.dart';
+import 'package:ride_with_passion/views/screens/onboarding_screen.dart';
 import 'package:ride_with_passion/views/view_models/home_view_model.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:ride_with_passion/views/widgets/main_title_text_widget.dart';
@@ -62,10 +64,22 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              bigSpace,
+              GestureDetector(
+                child: _buildPartner(),
+                onTap: model.onPartnerPressed,
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  _buildPartner() {
+    return Image.asset(
+      "assets/partner.png",
+      fit: BoxFit.fitWidth,
     );
   }
 
@@ -104,7 +118,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         smallSpace,
-        Text('Rennrad Routen',
+        Text('RR Routen',
             style: title18sp.merge(TextStyle(color: textColorSecondary))),
       ],
     );
@@ -123,7 +137,7 @@ class HomeScreen extends StatelessWidget {
         ),
         smallSpace,
         Text(
-          'Mountainbike Routen',
+          'MTB Routen',
           style: title18sp.merge(TextStyle(color: textColorSecondary)),
           maxLines: 1,
         ),
