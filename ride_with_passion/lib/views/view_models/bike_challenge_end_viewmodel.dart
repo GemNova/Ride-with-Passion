@@ -9,10 +9,11 @@ import 'package:ride_with_passion/services/firebase_service.dart';
 
 class BikeChallengeEndViewModel extends ChangeNotifier {
   final _firebaseService = getIt<FirebaseService>();
+  final user = getIt<AuthService>().user;
+
   Rank userRank;
 
-  initUserRank(Challenge route, String usernamae) {
-    final user = getIt<AuthService>().user;
+  initUserRank(Challenge route) {
     final int timeInMilli = route.duration.inMilliseconds;
     //so i think we do it like this
     userRank = Rank(

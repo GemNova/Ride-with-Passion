@@ -29,12 +29,13 @@ class FirebaseService {
     }
   }
 
-  Future<List<Rank>> getRanks(String routeId) async {
+  Future<List<Rank>> getRanks(String routeId, [User user]) async {
     logger.d("get ranks called called");
     QuerySnapshot querySnapshot = await _fireStoreInstance
         .collection('routes')
         .document(routeId)
         .collection('ranks')
+        .where("bikeType", isEqualTo: user?.bikeType)
         .getDocuments();
     logger.i(querySnapshot.documents);
     final list =

@@ -19,7 +19,7 @@ class BikeChallengeEndScreen extends StatelessWidget {
     return ViewModelProvider<BikeChallengeEndViewModel>.withConsumer(
       viewModelBuilder: () => BikeChallengeEndViewModel(),
       onModelReady: (model) {
-        model.initUserRank(route, "");
+        model.initUserRank(route);
       },
       builder: (context, model, child) => Scaffold(
         appBar: AppBarBlueWidget(),
@@ -112,7 +112,8 @@ class BikeChallengeEndScreen extends StatelessWidget {
   Future<int> getRank(BikeChallengeEndViewModel viewModel) async {
     // final int timeInMili = route.duration.inMilliseconds;
     // final rank = Rank(trackedTime: timeInMili, userName: "");
-    final ranks = await getIt<FirebaseService>().getRanks(route.trackId);
+    final ranks =
+        await getIt<FirebaseService>().getRanks(route.trackId, viewModel.user);
     ranks.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
     final rank = ranks
         .firstWhere((element) => element.userId == viewModel.userRank.userId);

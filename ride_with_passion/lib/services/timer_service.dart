@@ -79,7 +79,7 @@ class TimerService {
     _challengeRoute = challengeRoute;
     _endRouteChallenge = Position(
         latitude: challengeRoute.endCoordinates.lat,
-        longitude: challengeRoute.endCoordinates.lat);
+        longitude: challengeRoute.endCoordinates.lon);
     _routeId = challengeRoute.routeId;
     _routeName = challengeRoute.name;
     _isCompleteChallenge.add(false);
