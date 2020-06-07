@@ -27,9 +27,16 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Erlaube Ride with Passion Zugriff auf deinen Standort um die Challenge zu starten</string>
+	<string>Erlaube Bikechallenge Tirol Zugriff auf deinen Standort um die Challenge zu starten</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Erlaube Ride with Passion Zugriff auf deinen Standort um die Challenge zu starten</string>
+	<string>Erlaube Bikechallenge Tirol Zugriff auf deinen Standort um die Challenge zu starten</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Erlaube Bikechallenge Tirol Zugriff zur Kamera um Bilder aufzunehmen</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Erlaube Bikechallenge Tirol Zugriff zur Gallerie um Bilder hochzuladen</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Erlaube Bikechallenge Tirol Zugriff zum Mikrofon um Videos aufzunehmen</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
