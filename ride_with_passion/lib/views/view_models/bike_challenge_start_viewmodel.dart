@@ -7,6 +7,8 @@ import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/router.dart';
 import 'package:ride_with_passion/services/location_service.dart';
+import 'package:ride_with_passion/styles.dart';
+import 'package:ride_with_passion/views/widgets/timer_countdown_widget.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BikeChallengeStartViewModel extends ChangeNotifier {
@@ -69,6 +71,16 @@ class BikeChallengeStartViewModel extends ChangeNotifier {
 
   void onBikeChallengeStart() {
     Get.offNamed(BikeChallengesTimerRoute, arguments: challengeRoute);
+    Get.dialog(
+        CountDownTimer(
+          secondsRemaining: 10,
+          whenTimeExpires: () {
+            Get.back();
+          },
+          challengeRouteName: challengeRoute.name,
+          countDownTimerStyle: title60sp.copyWith(color: textColorSecondary),
+        ),
+        barrierDismissible: false);
   }
 
   @override

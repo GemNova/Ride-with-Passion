@@ -71,6 +71,8 @@ Rank _$RankFromJson(Map json) {
   return Rank(
     userId: json['userId'] as String,
     bikeType: json['bikeType'] as String,
+    gender: json['gender'] as String,
+    lastName: json['lastName'] as String,
     userName: json['userName'] as String,
     trackedTime: json['trackedTime'] as int,
   );
@@ -79,6 +81,8 @@ Rank _$RankFromJson(Map json) {
 Map<String, dynamic> _$RankToJson(Rank instance) => <String, dynamic>{
       'userId': instance.userId,
       'userName': instance.userName,
+      'lastName': instance.lastName,
+      'gender': instance.gender,
       'bikeType': instance.bikeType,
       'trackedTime': instance.trackedTime,
     };

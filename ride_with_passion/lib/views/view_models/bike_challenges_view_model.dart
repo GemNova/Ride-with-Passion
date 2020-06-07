@@ -1,16 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
-import 'package:ride_with_passion/helper/constants.dart';
 import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/router.dart';
 import 'package:ride_with_passion/services/firebase_service.dart';
-import 'package:ride_with_passion/services/location_service.dart';
-import 'package:ride_with_passion/services/routes_repository.dart';
 import 'package:ride_with_passion/services/timer_service.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -23,9 +19,13 @@ class BikeChallengesViewModel extends ChangeNotifier {
 
   String choiceValue = 'Bike';
 
+  String genderChosen = 'Männlich';
+
   List<Rank> rankList = [];
 
   List<Rank> filteredRankList = [];
+
+  List<Rank> filteredRankListByGender = [];
 
   BehaviorSubject<String> get timerCounter => _timerService.timerCounter;
 
@@ -51,8 +51,34 @@ class BikeChallengesViewModel extends ChangeNotifier {
   ranks() async {
     rankList = await _firebaseService.getRanks(challengeRoute.routeId);
     filteredRankList = rankList.where((element) {
-      return element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase();
+      return element.bikeType?.toLowerCase() ==
+              this.choiceValue.toLowerCase() &&
+          element.gender == this.genderChosen;
     }).toList();
+    notifyListeners();
+  }
+
+  void handleTabSelection(int index) {
+    switch (index) {
+      case 0:
+        genderChosen = 'Männlich';
+        filteredRankList = rankList
+            .where((element) =>
+                element.bikeType?.toLowerCase() ==
+                    this.choiceValue.toLowerCase() &&
+                element.gender == this.genderChosen)
+            .toList();
+        break;
+      case 1:
+        genderChosen = 'Weiblich';
+        filteredRankList = rankList
+            .where((element) =>
+                element.bikeType?.toLowerCase() ==
+                    this.choiceValue.toLowerCase() &&
+                element.gender == this.genderChosen)
+            .toList();
+        break;
+    }
     notifyListeners();
   }
 
@@ -60,7 +86,8 @@ class BikeChallengesViewModel extends ChangeNotifier {
     choiceValue = value;
     filteredRankList = rankList
         .where((element) =>
-            element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase())
+            element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase() &&
+            element.gender == this.genderChosen)
         .toList();
     notifyListeners();
   }
@@ -120,5 +147,11 @@ class BikeChallengesViewModel extends ChangeNotifier {
     isDownloading = false;
     notifyListeners();
     OpenFile.open(file.path);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

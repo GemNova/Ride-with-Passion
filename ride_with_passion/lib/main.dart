@@ -11,6 +11,7 @@ import 'package:ride_with_passion/services/timer_service.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/screens/home_screen.dart';
 import 'package:ride_with_passion/views/screens/login_screen.dart';
+import 'package:ride_with_passion/views/screens/register_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

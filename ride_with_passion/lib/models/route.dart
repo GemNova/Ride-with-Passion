@@ -59,12 +59,16 @@ class ChallengeRoute {
 class Rank {
   String userId;
   String userName;
+  String lastName;
+  String gender;
   String bikeType;
   int trackedTime;
 
   Rank({
     this.userId,
     this.bikeType,
+    this.gender,
+    this.lastName,
     this.userName,
     this.trackedTime,
   });

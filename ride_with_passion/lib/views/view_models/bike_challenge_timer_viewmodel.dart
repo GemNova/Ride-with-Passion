@@ -4,6 +4,8 @@ import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/router.dart';
 import 'package:ride_with_passion/services/timer_service.dart';
+import 'package:ride_with_passion/views/screens/onboarding_screen.dart';
+import 'package:ride_with_passion/views/widgets/timer_countdown_widget.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BikeChallengeTimerViewModel extends ChangeNotifier {
@@ -17,7 +19,11 @@ class BikeChallengeTimerViewModel extends ChangeNotifier {
   BikeChallengeTimerViewModel(ChallengeRoute challengeRoute) {
     this.challengeRoute = challengeRoute;
     if (!_timerService.running.value) {
-      _timerService.startWithChallenge(challengeRoute);
+      //Get.dialog(OnboardingScreen());
+
+      Future.delayed(Duration(seconds: 10)).then((value) {
+        _timerService.startWithChallenge(challengeRoute);
+      });
     }
   }
 

@@ -27,8 +27,11 @@ class HomeScreen extends StatelessWidget {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.exit_to_app),
-              onPressed: model.onLogoutPressed,
+              icon: Icon(
+                Icons.person,
+                color: accentColor,
+              ),
+              onPressed: model.onProfilePressed,
             )
           ],
         ),
@@ -39,6 +42,18 @@ class HomeScreen extends StatelessWidget {
               TimerWidget(
                 streamTimer: model.timerCounter,
                 running: model.running,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Center(
+                    child: Text(
+                  "Hallo ${model.userName}!",
+                  style: TextStyle(
+                    fontSize: 26,
+                    color: blackHeadingColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )),
               ),
               GestureDetector(
                 child: _buildBikeChallenge(),

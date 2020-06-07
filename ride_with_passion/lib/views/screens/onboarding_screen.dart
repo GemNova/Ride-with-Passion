@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:get/get.dart';
-import 'package:ride_with_passion/function_utils.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/widgets/custom_button.dart';
-import 'package:ride_with_passion/views/widgets/main_title_text_widget.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({Key key}) : super(key: key);

@@ -22,7 +22,9 @@ class BikeChallengeEndScreen extends StatelessWidget {
         model.initUserRank(route);
       },
       builder: (context, model, child) => Scaffold(
-        appBar: AppBarBlueWidget(),
+        appBar: AppBarBlueWidget(
+          hideBackButton: true,
+        ),
         body: Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.all(16.0),

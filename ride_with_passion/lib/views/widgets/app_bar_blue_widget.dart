@@ -5,20 +5,30 @@ import 'package:ride_with_passion/services/routes_repository.dart';
 import 'package:ride_with_passion/styles.dart';
 
 class AppBarBlueWidget extends AppBar {
-  AppBarBlueWidget({Key key})
-      : super(
+  final String firstText;
+  final String secondText;
+  final bool hideBackButton;
+
+  AppBarBlueWidget({
+    Key key,
+    this.hideBackButton = false,
+    this.firstText = 'BIKE',
+    this.secondText = 'CHALLENGE',
+  }) : super(
           key: key,
+          leading: hideBackButton ? Container() : null,
           backgroundColor: textColorSecondary,
           elevation: 0,
           title: RichText(
             textAlign: TextAlign.left,
             text: TextSpan(children: [
               TextSpan(
-                text: 'BIKE   ',
+                text: firstText,
                 style: title18sp.copyWith(color: accentColor),
               ),
+              TextSpan(text: '   '),
               TextSpan(
-                text: 'CHALLENGE',
+                text: secondText,
                 style: title18sp.copyWith(
                     color: Colors.white,
                     fontStyle: FontStyle.italic,

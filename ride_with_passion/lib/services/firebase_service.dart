@@ -29,6 +29,18 @@ class FirebaseService {
     }
   }
 
+  Stream<User> userDetail(String userId) async* {
+    _fireStoreInstance
+        .collection("users")
+        .document(userId)
+        .snapshots()
+        .listen((DocumentSnapshot documentSnapshot) async* {
+      User user;
+      user = User.fromJson(documentSnapshot.data);
+      yield user;
+    });
+  }
+
   Future<List<Rank>> getRanks(String routeId, [User user]) async {
     logger.d("get ranks called called");
     QuerySnapshot querySnapshot = await _fireStoreInstance
@@ -37,6 +49,31 @@ class FirebaseService {
         .collection('ranks')
         .where("bikeType", isEqualTo: user?.bikeType)
         .getDocuments();
+    logger.i(querySnapshot.documents);
+    final list =
+        querySnapshot.documents.map((e) => Rank.fromJson(e.data)).toList();
+    return list;
+  }
+
+  Future<List<Rank>> getRanksForUser(String userId) async {
+    final ranks = [];
+
+    logger.d("get ranks for user called called");
+    QuerySnapshot querySnapshot =
+        await _fireStoreInstance.collection('routes').getDocuments();
+
+    for (var snapshot in querySnapshot.documents) {
+      final documents = await snapshot.reference
+          .collection('ranks')
+          .where("userId", isEqualTo: userId)
+          .getDocuments();
+
+      logger.i(documents);
+      final list =
+          documents.documents.map((e) => Rank.fromJson(e.data)).toList();
+      ranks.addAll(list);
+    }
+
     logger.i(querySnapshot.documents);
     final list =
         querySnapshot.documents.map((e) => Rank.fromJson(e.data)).toList();
@@ -52,6 +89,13 @@ class FirebaseService {
         .collection("users")
         .document(user.id)
         .setData(user.toJson());
+  }
+
+  editUser(User user) async {
+    _fireStoreInstance
+        .collection("users")
+        .document(user.id)
+        .updateData(user.toJson());
   }
 
   Future<User> getUser(FirebaseUser user) async {

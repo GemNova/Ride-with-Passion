@@ -32,7 +32,7 @@ class LoginViewModel extends ChangeNotifier {
         return Get.snackbar("Da ist wohl etwas schiefgelaufen", error);
       }).whenComplete(() {
         isLoading = false;
-        notifyListeners();
+        //notifyListeners();
       });
     } else {
       notifyListeners();

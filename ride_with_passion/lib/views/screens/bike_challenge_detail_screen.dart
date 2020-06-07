@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:photo_view/photo_view.dart';
@@ -9,6 +10,7 @@ import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/view_models/bike_challenges_view_model.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:ride_with_passion/views/view_models/register_view_model.dart';
 import 'package:ride_with_passion/views/widgets/app_bar_blue_widget.dart';
 import 'package:ride_with_passion/views/widgets/custom_button.dart';
 import 'package:ride_with_passion/views/widgets/custom_card.dart';
@@ -22,10 +24,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 class BikeChallangesDetailScreen extends StatelessWidget {
   BikeChallangesDetailScreen(this.route, {Key key}) : super(key: key);
   final ChallengeRoute route;
+
   final ScrollController _rrectController = ScrollController();
 
   @override
-  Widget build(BuildContext contex) {
+  Widget build(BuildContext context) {
     return ViewModelProvider<BikeChallengesViewModel>.withConsumer(
       viewModelBuilder: () => BikeChallengesViewModel(this.route),
       builder: (context, model, child) => Scaffold(
@@ -54,10 +57,10 @@ class BikeChallangesDetailScreen extends StatelessWidget {
         ),
         _buildChallengeDiffType(),
         _headerButton(model, route),
-        _informationCard(context, model, route),
-        _graphCard(route, model),
-        _rankCard(route, model),
-        SponsorCardWidget(route: route),
+        _informationCard(context, model, this.route),
+        _graphCard(this.route, model),
+        _rankCard(this.route, model),
+        SponsorCardWidget(route: this.route),
       ],
     );
   }
@@ -70,11 +73,11 @@ class BikeChallangesDetailScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TrackNameTypeWidget(route),
+          TrackNameTypeWidget(this.route),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 30, 60),
             child: Text(
-              route.name,
+              this.route.name,
               style: title32sp,
             ),
           ),
@@ -337,12 +340,11 @@ class BikeChallangesDetailScreen extends StatelessWidget {
             ),
             mediumSpace,
             _buildChoiceChip(model),
-            mediumSpace,
             Container(
-              constraints: BoxConstraints(minHeight: 50, maxHeight: 170),
+              constraints: BoxConstraints(minHeight: 50, maxHeight: 200),
               child: _rankData(route, model),
             ),
-            bigSpace,
+            smallSpace,
           ],
         ),
       ),
@@ -378,51 +380,111 @@ class BikeChallangesDetailScreen extends StatelessWidget {
   }
 
   Widget _rankData(ChallengeRoute route, BikeChallengesViewModel model) {
-    print('filtered rank ${model.filteredRankList.length}');
-    return DraggableScrollbar.rrect(
-      controller: _rrectController,
-      alwaysVisibleScrollThumb: true,
-      backgroundColor: accentColor,
-      child: ListView.separated(
-          controller: _rrectController,
-          padding: EdgeInsets.only(right: 20),
-          itemCount: model.filteredRankList.length,
-          separatorBuilder: (context, index) {
-            return dividerOrangeText();
-          },
-          itemBuilder: (context, index) {
-            // if (model.filteredRankList.length != 1 &&
-            //     (index == 0 || index == model.filteredRankList.length + 1)) {
-            //   return Container(); // zero height: not visible
-            // }
-            final rank = model.filteredRankList[index];
-            return Column(
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: <Widget>[
+          _buildTabBar(model),
+          Expanded(
+            child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
-                if (index == 0) dividerOrangeText(),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      '${index + 1}.',
-                      style: title18cb,
-                    ),
-                    mediumSpace,
-                    Expanded(
-                      child: Text(
-                        rank.userName,
-                        style: medium18cb,
-                      ),
-                    ),
-                    Text(
-                      '${Duration(milliseconds: rank.trackedTime).toString().split('.')[0]}',
-                      style:
-                          medium18sp.copyWith(color: blackColor, fontSize: 16),
-                    )
-                  ],
-                ),
+                _buildRankList(model),
+                _buildRankList(model),
               ],
-            );
-          }),
+            ),
+          ),
+        ],
+      ),
     );
+  }
+
+  TabBar _buildTabBar(BikeChallengesViewModel model) {
+    return TabBar(
+      isScrollable: false,
+      labelPadding: EdgeInsets.zero,
+      onTap: (index) => model.handleTabSelection(index),
+      indicatorColor: accentColor,
+      indicatorWeight: 2,
+      indicatorSize: TabBarIndicatorSize.label,
+      unselectedLabelColor: Colors.black54,
+      tabs: [
+        _buildTab('Männer', model),
+        _buildTab('Frauen', model),
+      ],
+    );
+  }
+
+  Container _buildTab(String title, BikeChallengesViewModel model) {
+    return Container(
+      height: 30,
+      width: double.infinity,
+      color: model.genderChosen == title.toLowerCase()
+          ? accentColor
+          : Colors.white,
+      child: Tab(
+        child: Text(
+          title,
+          style: TextStyle(
+              color: model.genderChosen == title.toLowerCase()
+                  ? Colors.white
+                  : accentColor),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRankList(BikeChallengesViewModel model) {
+    return model.filteredRankList.length == 0
+        ? Center(
+            child: Text('Es gibt noch keine Zeiten in dieser Kategorie'),
+          )
+        : DraggableScrollbar.rrect(
+            controller: _rrectController,
+            alwaysVisibleScrollThumb: true,
+            backgroundColor: accentColor,
+            child: ListView.separated(
+                controller: _rrectController,
+                padding: EdgeInsets.only(right: 20),
+                itemCount: model.filteredRankList.length,
+                separatorBuilder: (context, index) {
+                  return dividerOrangeText();
+                },
+                itemBuilder: (context, index) {
+                  // if (model.filteredRankList.length != 1 &&
+                  //     (index == 0 || index == model.filteredRankList.length + 1)) {
+                  //   return Container(); // zero height: not visible
+                  // }
+                  final rank = model.filteredRankList[index];
+                  return Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              '${index + 1}.',
+                              style: title18cb,
+                            ),
+                            mediumSpace,
+                            Expanded(
+                              child: Text(
+                                '${rank.userName} ${rank.lastName}',
+                                style: medium18cb,
+                              ),
+                            ),
+                            Text(
+                              '${Duration(milliseconds: rank.trackedTime).toString().split('.')[0]}',
+                              style: medium18sp.copyWith(
+                                  color: blackColor, fontSize: 16),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+          );
   }
 
   Widget _mapViewBody(BikeChallengesViewModel model, BuildContext context) {
@@ -431,7 +493,7 @@ class BikeChallangesDetailScreen extends StatelessWidget {
         mediumSpace,
         TextTitleTopWidget(),
         smallSpace,
-        ChallengeNameTextWidget(challengeName: route.name),
+        ChallengeNameTextWidget(challengeName: this.route.name),
         Spacer(),
         Container(
           height: MediaQuery.of(context).size.height * 0.5,
@@ -440,7 +502,7 @@ class BikeChallangesDetailScreen extends StatelessWidget {
               maxScale: PhotoViewComputedScale.covered * 2.0,
               minScale: PhotoViewComputedScale.contained * 0.8,
               initialScale: PhotoViewComputedScale.contained,
-              imageProvider: CachedNetworkImageProvider(route.mapImage)),
+              imageProvider: CachedNetworkImageProvider(this.route.mapImage)),
         ),
         Spacer(),
         Align(

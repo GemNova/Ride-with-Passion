@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TimerService {
   final log = getLogger("TimerService");
   Isolate _isolate;
-  int _counterTime = 0;
+  int _counterTime = 1;
   ReceivePort _receivePort;
   String _routeId;
   String _routeName;
@@ -45,8 +45,8 @@ class TimerService {
   void startWithChallenge(ChallengeRoute challengeRoute) async {
     initValueWhenStart(challengeRoute);
     await checkTimerFromSetting();
-    await saveToSetting();
     await startTheChallenge();
+    await saveToSetting();
   }
 
   void startFromResume() async {
@@ -102,7 +102,7 @@ class TimerService {
     Position position = await _locationService.getCurrentPosition();
     final initDistance =
         await _locationService.getDistance(_endRouteChallenge, position);
-    return FunctionUtils.isDoubleBelow(initDistance);
+    return FunctionUtils.isDoubleBelow(5);
   }
 
   listenWhenReachedEndLine() async {

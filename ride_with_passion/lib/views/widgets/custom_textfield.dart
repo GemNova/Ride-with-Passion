@@ -11,8 +11,8 @@ class CustomTextField extends StatelessWidget {
   final FocusNode focusNode;
 
   final TextInputAction textInputAction;
+  final TextEditingController textEditingController;
 
-  final TextEditingController controller;
   final Function(String) onChanged;
   final Function(String) onSubmit;
   final int minLines;
@@ -20,10 +20,10 @@ class CustomTextField extends StatelessWidget {
     Key key,
     this.hint,
     this.label,
-    this.controller,
     this.onChanged,
     this.minLines,
     this.errorText,
+    this.textEditingController,
     this.obscure = false,
     this.validator,
     this.keyboardType,
@@ -45,9 +45,9 @@ class CustomTextField extends StatelessWidget {
             ),
             child: TextFormField(
               keyboardType: keyboardType,
+              controller: textEditingController,
               obscureText: obscure,
               style: medium20sp,
-              controller: controller,
               focusNode: focusNode,
               textInputAction: textInputAction,
               minLines: minLines,

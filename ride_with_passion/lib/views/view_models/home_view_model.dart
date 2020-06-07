@@ -17,14 +17,23 @@ class HomeViewModel extends ChangeNotifier {
 
   BehaviorSubject<bool> get running => _timerService.running;
 
+  String get userName => getIt<AuthService>().user?.firstName;
+
   ChallengeRoute get challengeRoute => _timerService.challengeRoute;
   BehaviorSubject<List<ChallengeRoute>> _filteredRoutes = BehaviorSubject();
 
   Stream<List<Route>> list;
 
+  HomeViewModel() {
+    getIt<AuthService>().isLoggedIn.listen((value) {
+      if (value) {
+        notifyListeners();
+      }
+    });
+  }
+
   BehaviorSubject<List<ChallengeRoute>> getRoutes(RouteType routeType) {
     String routeName = routeType.toString().split('.').last.toLowerCase();
-    print('routeType $routeName');
     if (routeType == null) {
       return _routeRepository.routes;
     } else {
@@ -44,8 +53,8 @@ class HomeViewModel extends ChangeNotifier {
     }
   }
 
-  onLogoutPressed() {
-    getIt<AuthService>().logout();
+  onProfilePressed() {
+    Get.toNamed(ProfileRoute);
   }
 
   void onBikeChallengePressed({RouteType routeType}) {
