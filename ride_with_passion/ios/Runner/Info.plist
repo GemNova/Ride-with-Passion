@@ -32,7 +32,6 @@
 	<string>Erlaube Bikechallenge Tirol Zugriff auf deinen Standort um die Challenge zu starten</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Erlaube Bikechallenge Tirol Zugriff zur Kamera um Bilder aufzunehmen</string>
-	<key>NSLocationAlwaysUsageDescription</key>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Erlaube Bikechallenge Tirol Zugriff zur Gallerie um Bilder hochzuladen</string>
 	<key>NSMicrophoneUsageDescription</key>
