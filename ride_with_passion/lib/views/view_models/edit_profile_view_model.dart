@@ -11,7 +11,7 @@ class EditProfileViewModel extends ChangeNotifier {
   bool isLoading = false;
 
   final formKey = GlobalKey<FormState>();
-  final User user = getIt<AuthService>().user;
+  final User user = getIt<AuthService>().userStream?.value;
 
   TextEditingController textEditingControllerFirstName =
       TextEditingController();
@@ -70,18 +70,22 @@ class EditProfileViewModel extends ChangeNotifier {
 
   setFirstName(String firstName) {
     this.firstName = firstName;
+    notifyListeners();
   }
 
   setLastName(String lastName) {
     this.lastName = lastName;
+    notifyListeners();
   }
 
   setType(String type) {
     this.type = type;
+    notifyListeners();
   }
 
   setGender(String gender) {
     this.gender = gender;
+    notifyListeners();
   }
 
   void setImage(File image) {
@@ -97,22 +101,27 @@ class EditProfileViewModel extends ChangeNotifier {
 
   setStreet(String street) {
     this.street = street;
+    notifyListeners();
   }
 
   setHouseNumber(String houseNumber) {
     this.houseNumber = houseNumber;
+    notifyListeners();
   }
 
   setCity(String city) {
     this.city = city;
+    notifyListeners();
   }
 
   setPostCode(String postCode) {
     this.postCode = postCode;
+    notifyListeners();
   }
 
   setCountry(String country) {
     this.country = country;
+    notifyListeners();
   }
 
   onEditPressed() {

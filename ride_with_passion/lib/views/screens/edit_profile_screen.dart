@@ -212,8 +212,8 @@ class EditProfileScreen extends StatelessWidget {
               children: <Widget>[
                 CustomTextField(
                   textEditingController: model.textEditingControllerStreet,
-                  label: "Stra0e",
-                  hint: "Stra0e",
+                  label: "Straße",
+                  hint: "Straße",
                   onSubmit: (_) =>
                       FocusScope.of(context).requestFocus(houseNumberFocusNode),
                   focusNode: streetFocusNode,

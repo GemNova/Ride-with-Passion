@@ -32,9 +32,9 @@ class AuthService with ChangeNotifier {
     subscriptionLogin =
         _authInstance.onAuthStateChanged.listen((firebaseUser) async {
       if (firebaseUser != null) {
-        isLoggedIn.add(true);
         this.user = await _firebaseService.getUser(firebaseUser);
         userStream.add(this.user);
+        isLoggedIn.add(true);
         //todo need to look this code. how to move in firebase service.
         subscriptionUserDetail = _fireStoreInstance
             .collection("users")

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_with_passion/helper/constants.dart';
+import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/view_models/home_view_model.dart';
 import 'package:provider_architecture/provider_architecture.dart';
@@ -18,7 +19,7 @@ class BikeChallangesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<HomeViewModel>.withConsumer(
-      viewModelBuilder: () => HomeViewModel(),
+      viewModelBuilder: () => getIt<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBarBlueWidget(),
         body: Container(

@@ -34,13 +34,18 @@ class PartnerScreen extends StatelessWidget {
                         child: CachedNetworkImage(
                           imageUrl: image.image,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Align(
-                              alignment: Alignment.topCenter,
-                              child: LinearProgressIndicator(
-                                backgroundColor: Colors.transparent,
-                                valueColor: AlwaysStoppedAnimation(accentColor),
+                          placeholder: (context, url) => Container(
+                            height: 200,
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: LinearProgressIndicator(
+                                  backgroundColor: Colors.transparent,
+                                  valueColor:
+                                      AlwaysStoppedAnimation(accentColor),
+                                ),
                               ),
                             ),
                           ),

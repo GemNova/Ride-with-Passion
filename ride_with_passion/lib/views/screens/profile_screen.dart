@@ -66,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                         _buildRowPairInformation(
                           'Geburstdatum',
                           user.birthDate == null
-                              ? 'Kein Geburstdatum ausgewöhlt'
+                              ? 'Kein Geburstdatum ausgewählt'
                               : DateFormat('MMM dd, yyyy')
                                   .format(user.birthDate),
                         ),

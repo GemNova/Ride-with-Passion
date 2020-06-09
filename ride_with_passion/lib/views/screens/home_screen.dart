@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:ride_with_passion/helper/constants.dart';
+import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/screens/onboarding_screen.dart';
 import 'package:ride_with_passion/views/view_models/home_view_model.dart';
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<HomeViewModel>.withConsumer(
-      viewModelBuilder: () => HomeViewModel(),
+      viewModelBuilder: () => getIt<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(239, 236, 219, 1),
@@ -91,13 +92,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  _buildPartner() {
-    return Image.asset(
-      "assets/partner.png",
-      fit: BoxFit.fitWidth,
-    );
-  }
-
   _buildBikeChallenge() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +122,7 @@ class HomeScreen extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.asset(
-            "assets/images/renrad_route.png",
+            "assets/images/mountain_route.png",
             fit: BoxFit.cover,
           ),
         ),
@@ -146,13 +140,34 @@ class HomeScreen extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.asset(
-            "assets/images/mountain_route.png",
+            "assets/images/mtb.png",
             fit: BoxFit.cover,
           ),
         ),
         smallSpace,
         Text(
           'MTB Routen',
+          style: title18sp.merge(TextStyle(color: textColorSecondary)),
+          maxLines: 1,
+        ),
+      ],
+    );
+  }
+
+  _buildPartner() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.asset(
+            "assets/images/partner.png",
+            fit: BoxFit.cover,
+          ),
+        ),
+        smallSpace,
+        Text(
+          'Partner',
           style: title18sp.merge(TextStyle(color: textColorSecondary)),
           maxLines: 1,
         ),

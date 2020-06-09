@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ride_with_passion/function_utils.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/widgets/custom_button.dart';
 
@@ -73,6 +75,25 @@ class OnboardingScreen extends StatelessWidget {
                             letterSpacing: 0.5,
                           ),
                         ),
+                        TextSpan(
+                            text: '\n\nMehr Infos unter: ',
+                            style: TextStyle(
+                              fontSize: 21,
+                              color: textColorSecondary,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
+                            )),
+                        TextSpan(
+                            text: ' www.bikechallenge.tirol',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => FunctionUtils.launchURL(
+                                  "https://www.bikechallenge.tirol"),
+                            style: TextStyle(
+                              fontSize: 21,
+                              color: accentColor,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
+                            )),
                       ])))),
           Padding(
             padding: const EdgeInsets.all(36.0),

@@ -117,17 +117,6 @@ class BikeChallangesDetailScreen extends StatelessWidget {
           },
         ),
         mediumSpace,
-        model.isDownloading
-            ? CustomLoadingIndicator()
-            : CustomButton(
-                text: 'GPX DATEI HERUNTERLADEN',
-                backGroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 22),
-                textColor: textColorSecondary,
-                borderColor: textColorSecondary,
-                onPressed: () => model.onDownloadGpxFilePressed(),
-              ),
-        mediumSpace,
       ],
     );
   }
