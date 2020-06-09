@@ -1,25 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:provider_architecture/provider_architecture.dart';
 import 'package:ride_with_passion/function_utils.dart';
 import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/view_models/bike_challenges_view_model.dart';
-import 'package:provider_architecture/provider_architecture.dart';
-import 'package:ride_with_passion/views/view_models/register_view_model.dart';
 import 'package:ride_with_passion/views/widgets/app_bar_blue_widget.dart';
 import 'package:ride_with_passion/views/widgets/custom_button.dart';
 import 'package:ride_with_passion/views/widgets/custom_card.dart';
-import 'package:ride_with_passion/views/widgets/custom_loading_indicator.dart';
 import 'package:ride_with_passion/views/widgets/sponsor_card_widget.dart';
 import 'package:ride_with_passion/views/widgets/text_title_top_widget.dart';
 import 'package:ride_with_passion/views/widgets/timer_widget.dart';
 import 'package:ride_with_passion/views/widgets/track_name_type_widget.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class BikeChallangesDetailScreen extends StatelessWidget {
   BikeChallangesDetailScreen(this.route, {Key key}) : super(key: key);
