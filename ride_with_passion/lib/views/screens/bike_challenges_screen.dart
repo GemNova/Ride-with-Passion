@@ -19,6 +19,7 @@ class BikeChallangesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<HomeViewModel>.withConsumer(
+      disposeViewModel: false,
       viewModelBuilder: () => getIt<HomeViewModel>(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBarBlueWidget(),

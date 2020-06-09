@@ -107,7 +107,7 @@ class RegisterScreen extends StatelessWidget {
                         smallSpace,
                         DateFieldWidget(
                             label: 'Geburstdatum (optional)',
-                            text: 'Bitte wähle dein Geburtsdatum',
+                            text: 'Bitte wähle dein Geburtsdatum (optional)',
                             onChanged: model.setBirthday,
                             date: model.birthDate,
                             iconData: Icons.card_giftcard),
@@ -188,7 +188,7 @@ class RegisterScreen extends StatelessWidget {
       child: DropdownButton(
         isExpanded: true,
         hint: Text(
-          'Geschlecht',
+          'Geschlecht (optional)',
           style: TextStyle(color: Colors.grey[500]),
         ),
         value: model.gender,

@@ -38,7 +38,7 @@ class RegisterViewModel extends ChangeNotifier {
       (password?.isNotEmpty ?? false) &&
       (email?.isNotEmpty ?? false) &&
       (type != null) &&
-      (gender != null) &&
+      // (gender != null) &&
       tcValue &&
       tc1Value;
 
@@ -120,7 +120,7 @@ class RegisterViewModel extends ChangeNotifier {
         firstName: firstName,
         lastName: lastName,
         bikeType: type,
-        gender: gender,
+        gender: gender ?? "Männlich",
         image: image,
         birthDate: birthDate,
         street: street,
