@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:ride_with_passion/models/user.dart';
 import 'package:ride_with_passion/styles.dart';
@@ -79,8 +80,19 @@ class ProfileScreen extends StatelessWidget {
                 return Container();
               }),
           bigSpace,
-          Divider(),
+          // Divider(),
           bigSpace,
+          FutureBuilder<PackageInfo>(
+            future: PackageInfo.fromPlatform(),
+            builder:
+                (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
+              if (snapshot.hasData) {
+                return Text("Version: ${snapshot.data.version}");
+              } else {
+                return Container();
+              }
+            },
+          ),
           // Text("Meine Zeiten"),
           // ListView.separated(
           //     padding: EdgeInsets.only(right: 20),
