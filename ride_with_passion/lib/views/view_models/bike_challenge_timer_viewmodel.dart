@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/router.dart';
+import 'package:ride_with_passion/services/auth_service.dart';
 import 'package:ride_with_passion/services/timer_service.dart';
 import 'package:ride_with_passion/views/screens/onboarding_screen.dart';
 import 'package:ride_with_passion/views/widgets/timer_countdown_widget.dart';
@@ -10,6 +11,8 @@ import 'package:rxdart/rxdart.dart';
 
 class BikeChallengeTimerViewModel extends ChangeNotifier {
   final TimerService _timerService = getIt<TimerService>();
+  final AuthService _authService = getIt<AuthService>();
+
   ChallengeRoute challengeRoute;
 
   BehaviorSubject<String> get timerCounter => _timerService.timerCounter;
@@ -22,9 +25,16 @@ class BikeChallengeTimerViewModel extends ChangeNotifier {
       //Get.dialog(OnboardingScreen());
 
       Future.delayed(Duration(seconds: 10)).then((value) {
-        _timerService.startWithChallenge(challengeRoute);
+        if (!_timerService.running.value)
+          _timerService.startWithChallenge(challengeRoute);
       });
     }
+  }
+
+  bool get isDebugUser => _authService.user.debugUser;
+
+  finishChallenge() async {
+    _timerService.finishChallenge(0);
   }
 
   stopTimer() async {

@@ -19,7 +19,7 @@ class BikeChallengesViewModel extends ChangeNotifier {
 
   String choiceValue = 'Bike';
 
-  String genderChosen = 'Männlich';
+  String genderChosen;
 
   List<Rank> rankList = [];
 
@@ -51,16 +51,35 @@ class BikeChallengesViewModel extends ChangeNotifier {
   ranks() async {
     rankList = await _firebaseService.getRanks(challengeRoute.routeId);
     filteredRankList = rankList.where((element) {
-      return element.bikeType?.toLowerCase() ==
-              this.choiceValue.toLowerCase() &&
-          element.gender == this.genderChosen;
+      return element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase();
     }).toList();
+    if (genderChosen != null) {
+      filteredRankList = filteredRankList.where((element) {
+        return element.gender == this.genderChosen;
+      }).toList();
+    } else {
+      filteredRankList = filteredRankList.where((element) {
+        return element.gender != null;
+      }).toList();
+    }
+    filteredRankList.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
+
     notifyListeners();
   }
 
   void handleTabSelection(int index) {
     switch (index) {
       case 0:
+        genderChosen = null;
+        filteredRankList = rankList
+            .where((element) =>
+                element.bikeType?.toLowerCase() ==
+                    this.choiceValue.toLowerCase() &&
+                element.gender != null)
+            .toList();
+        filteredRankList.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
+        break;
+      case 1:
         genderChosen = 'Männlich';
         filteredRankList = rankList
             .where((element) =>
@@ -68,8 +87,9 @@ class BikeChallengesViewModel extends ChangeNotifier {
                     this.choiceValue.toLowerCase() &&
                 element.gender == this.genderChosen)
             .toList();
+        filteredRankList.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
         break;
-      case 1:
+      case 2:
         genderChosen = 'Weiblich';
         filteredRankList = rankList
             .where((element) =>
@@ -77,6 +97,8 @@ class BikeChallengesViewModel extends ChangeNotifier {
                     this.choiceValue.toLowerCase() &&
                 element.gender == this.genderChosen)
             .toList();
+        filteredRankList.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
+
         break;
     }
     notifyListeners();
@@ -86,9 +108,18 @@ class BikeChallengesViewModel extends ChangeNotifier {
     choiceValue = value;
     filteredRankList = rankList
         .where((element) =>
-            element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase() &&
-            element.gender == this.genderChosen)
+            element.bikeType?.toLowerCase() == this.choiceValue.toLowerCase())
         .toList();
+    if (genderChosen != null) {
+      filteredRankList = filteredRankList.where((element) {
+        return element.gender == this.genderChosen;
+      }).toList();
+    } else {
+      filteredRankList = filteredRankList.where((element) {
+        return element.gender != null;
+      }).toList();
+    }
+    filteredRankList.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
     notifyListeners();
   }
 

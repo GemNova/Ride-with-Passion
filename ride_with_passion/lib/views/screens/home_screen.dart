@@ -4,12 +4,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:ride_with_passion/helper/constants.dart';
 import 'package:ride_with_passion/locator.dart';
+import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/screens/onboarding_screen.dart';
 import 'package:ride_with_passion/views/view_models/home_view_model.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:ride_with_passion/views/widgets/custom_button.dart';
 import 'package:ride_with_passion/views/widgets/main_title_text_widget.dart';
 import 'package:ride_with_passion/views/widgets/timer_widget.dart';
+
+import 'bike_challenge_timer_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -49,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
                     child: Text(
-                  "Hallo ${model.userName}!",
+                  "Hallo ${model?.user?.firstName ?? ""}!",
                   style: TextStyle(
                     fontSize: 26,
                     color: blackHeadingColor,
@@ -57,11 +61,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 )),
               ),
-              GestureDetector(
-                child: _buildBikeChallenge(),
-                onTap: model.onBikeChallengePressed,
-              ),
-              bigSpace,
+              smallSpace,
               Row(
                 children: <Widget>[
                   Expanded(
@@ -82,10 +82,24 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               bigSpace,
-              GestureDetector(
-                child: _buildPartner(),
-                onTap: model.onPartnerPressed,
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: GestureDetector(
+                      child: _buildMoreInfo(),
+                      onTap: model.onBikeChallengePressed,
+                    ),
+                  ),
+                  smallSpace,
+                  Expanded(
+                    child: GestureDetector(
+                      child: _buildPartner(),
+                      onTap: model.onPartnerPressed,
+                    ),
+                  ),
+                ],
               ),
+              if (model?.user?.debugUser ?? false) _buildDebugRoute()
             ],
           ),
         ),
@@ -93,12 +107,11 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  _buildBikeChallenge() {
+  _buildMoreInfo() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          height: 300,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: Image.asset(
@@ -109,7 +122,7 @@ class HomeScreen extends StatelessWidget {
         ),
         smallSpace,
         Text(
-          'Bike Challenges',
+          'Mehr Infos',
           style: title18sp.merge(TextStyle(color: textColorSecondary)),
         ),
       ],
@@ -173,6 +186,28 @@ class HomeScreen extends StatelessWidget {
           maxLines: 1,
         ),
       ],
+    );
+  }
+
+  _buildDebugRoute() {
+    return CustomButton(
+      text: "Debug Route",
+      onPressed: () {
+        Get.to(BikeChallengeTimerScreen(
+          ChallengeRoute(
+            routeId: 'q07Cqq77JgqGSC7gvI5R',
+            name: 'Tour zur Lanser Alm',
+            startCoordinates: Coordinates(
+              lat: 47.2322,
+              lon: 11.4311,
+            ),
+            endCoordinates: Coordinates(
+              lat: 48.2322,
+              lon: 12.4311,
+            ),
+          ),
+        ));
+      },
     );
   }
 }

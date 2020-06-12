@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:isolate';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -17,9 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TimerService {
   final log = getLogger("TimerService");
-  Isolate _isolate;
-  int _counterTime = 1;
-  ReceivePort _receivePort;
+  int _counterTime = 0;
+  Timer _timer;
   String _routeId;
   String _routeName;
   Position _endRouteChallenge;
@@ -42,30 +40,27 @@ class TimerService {
 
   ChallengeRoute get challengeRoute => _challengeRoute;
 
+  TimerService() {
+    startWithoutRouteId();
+  }
+
   void startWithChallenge(ChallengeRoute challengeRoute) async {
     initValueWhenStart(challengeRoute);
     await checkTimerFromSetting();
-    await startTheChallenge();
     await saveToSetting();
-  }
-
-  void startFromResume() async {
-    log.i(' start from resume $_routeId');
-    if (await isSettingTimerEmpty() || await isReachedEndLine()) {
-      return;
-    }
-    await checkTimerFromSetting();
     await startTheChallenge();
   }
 
   void startWithoutRouteId() async {
-    ChallengeRoute challengeRouteFromSetting = await checkTimerFromSetting();
-    if (challengeRouteFromSetting == null) {
-      log.i('not found any key');
-      return;
-    } else {
-      initValueWhenStart(challengeRouteFromSetting);
-      await startTheChallenge();
+    if (!running.value) {
+      ChallengeRoute challengeRouteFromSetting = await checkTimerFromSetting();
+      if (challengeRouteFromSetting == null) {
+        log.i('not found any key');
+        return;
+      } else {
+        initValueWhenStart(challengeRouteFromSetting);
+        await startTheChallenge();
+      }
     }
   }
 
@@ -87,11 +82,7 @@ class TimerService {
 
   startTheChallenge() async {
     _running.add(true);
-    _receivePort = ReceivePort();
-    _isolate = await Isolate.spawn(_checkTimer, _receivePort.sendPort);
-    _receivePort.listen(_handleMessage, onDone: () {
-      log.i("dart isolate stopped");
-    });
+    startTimer();
     listenWhenReachedEndLine();
   }
 
@@ -121,18 +112,24 @@ class TimerService {
       _locationService
           .getDistance(_endRouteChallenge, newPosition)
           .then((distance) async {
-        if (await FunctionUtils.isDoubleBelow(distance) && running.value) {
-          _isCompleteChallenge.value = true;
-          _challengeData.duration = Duration(seconds: _counterTime);
-          log.i('distance is less 50m from end line, distance $distance');
-          log.i('challenge data saved is ${_challengeData.duration.inSeconds}');
-          stopFromButton();
-          Get.toNamed(BikeChallengesEndRoute, arguments: _challengeData);
-        } else {
-          log.i('distance is more 50m from end line, distance $distance');
-        }
+        await finishChallenge(distance);
       });
     });
+  }
+
+  Future finishChallenge(double distance) async {
+    log.i('distance is less 50m from end line, distance $distance');
+
+    if (await FunctionUtils.isDoubleBelow(distance) && running.value) {
+      _isCompleteChallenge.value = true;
+      _challengeData.duration = Duration(seconds: _counterTime);
+      log.i('distance is less 50m from end line, distance $distance');
+      log.i('challenge data saved is ${_challengeData.duration.inSeconds}');
+      stopFromButton();
+      Get.toNamed(BikeChallengesEndRoute, arguments: _challengeData);
+    } else {
+      log.i('distance is more 50m from end line, distance $distance');
+    }
   }
 
   Future<bool> isAllowedToTimerScreen(ChallengeRoute challengeRoute) async {
@@ -190,14 +187,15 @@ class TimerService {
         'setting saved. time ${DateTime.now()} route name: ${_challengeRoute.name}');
   }
 
-  static void _checkTimer(SendPort sendPort) async {
-    Timer.periodic(new Duration(seconds: 1), (Timer t) {
-      sendPort.send(1);
+  void startTimer() async {
+    if (_timer != null) return;
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      _timerTick();
     });
   }
 
-  void _handleMessage(dynamic data) {
-    _counterTime = _counterTime + data;
+  void _timerTick() {
+    _counterTime = _counterTime + 1;
     _timerCounter.value = formattedTimer(Duration(seconds: _counterTime));
   }
 
@@ -208,13 +206,12 @@ class TimerService {
   }
 
   stopTimer() async {
-    if (_isolate != null && _routeId != null) {
+    if (_routeId != null) {
+      _timer?.cancel();
+      _timer = null;
       _running.add(false);
       _counterTime = 0;
       _timerCounter.add('00:00:00');
-      _receivePort.close();
-      _isolate.kill(priority: Isolate.immediate);
-      _isolate = null;
     }
   }
 

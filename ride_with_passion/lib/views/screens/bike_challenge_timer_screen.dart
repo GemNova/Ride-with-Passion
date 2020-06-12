@@ -25,23 +25,36 @@ class BikeChallengeTimerScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              _title(),
+              Align(alignment: Alignment.topCenter, child: _title()),
               //_description(),
-              Spacer(),
-              _timerCounter(model.timerCounter),
-              Spacer(),
-              StreamBuilder(
-                stream: model.running,
-                builder: (context, AsyncSnapshot<bool> snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data) {
-                      return _cancelTimerButton(model);
-                    } else {
-                      return _startTimerButton(model);
+              Expanded(child: _timerCounter(model.timerCounter)),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: StreamBuilder(
+                  stream: model.running,
+                  builder: (context, AsyncSnapshot<bool> snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data) {
+                        return Column(
+                          children: <Widget>[
+                            smallSpace,
+                            _finishButton(model),
+                            smallSpace,
+                            _cancelTimerButton(model),
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: <Widget>[
+                            smallSpace,
+                            _startTimerButton(model),
+                          ],
+                        );
+                      }
                     }
-                  }
-                  return Container();
-                },
+                    return Container();
+                  },
+                ),
               ),
             ],
           ),
@@ -52,8 +65,9 @@ class BikeChallengeTimerScreen extends StatelessWidget {
 
   Widget _title() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        hugeSpace,
+        smallSpace,
         TextTitleTopWidget(),
         smallSpace,
         ChallengeNameTextWidget(challengeName: this.challengeRoute.name),
@@ -72,9 +86,8 @@ class BikeChallengeTimerScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
                 ),
-                color: Colors.grey[300],
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 120),
+                color: Theme.of(context).canvasColor,
+                child: Center(
                   child: Text(snapshot.data,
                       style: title60sp.copyWith(color: textColorSecondary)),
                 ));
@@ -85,14 +98,20 @@ class BikeChallengeTimerScreen extends StatelessWidget {
     );
   }
 
+  Widget _finishButton(BikeChallengeTimerViewModel model) {
+    return CustomButton(
+      text: 'Challenge erfolgreich beenden',
+      padding: EdgeInsets.symmetric(vertical: 24),
+      onPressed: model.finishChallenge,
+      backGroundColor: textColorSecondary,
+    );
+  }
+
   Widget _cancelTimerButton(BikeChallengeTimerViewModel model) {
-    return Container(
-      width: 300,
-      child: CustomButton(
-        text: 'Challenge Abbrechen',
-        padding: EdgeInsets.symmetric(vertical: 24),
-        onPressed: model.stopTimer,
-      ),
+    return CustomButton(
+      text: 'Challenge Abbrechen',
+      padding: EdgeInsets.symmetric(vertical: 24),
+      onPressed: model.stopTimer,
     );
   }
 

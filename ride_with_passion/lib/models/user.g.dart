@@ -16,9 +16,11 @@ User _$UserFromJson(Map json) {
     gender: json['gender'] as String,
     imageUrl: json['imageUrl'] as String,
     birthDate: timeStampToDateFromJson(json['birthDate'] as Timestamp),
+    debugUser: json['debugUser'] as bool,
     city: json['city'] as String,
     country: json['country'] as String,
     houseNumber: json['houseNumber'] as String,
+    gewinnSpiel: json['gewinnSpiel'] as bool,
     postCode: json['postCode'] as String,
     street: json['street'] as String,
   );
@@ -46,5 +48,7 @@ Map<String, dynamic> _$UserToJson(User instance) {
   writeNotNull('city', instance.city);
   writeNotNull('postCode', instance.postCode);
   writeNotNull('country', instance.country);
+  writeNotNull('gewinnSpiel', instance.gewinnSpiel);
+  writeNotNull('debugUser', instance.debugUser);
   return val;
 }

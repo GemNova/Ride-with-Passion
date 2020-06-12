@@ -73,6 +73,7 @@ class RegisterScreen extends StatelessWidget {
                           focusNode: emailFocusNode,
                           onSubmit: (_) => FocusScope.of(context)
                               .requestFocus(passwordFocusNode),
+                          keyboardType: TextInputType.emailAddress,
                           onChanged: model.setEmail,
                           validator: (email) => isEmail(email.trim())
                               ? null
@@ -87,13 +88,8 @@ class RegisterScreen extends StatelessWidget {
                           onSubmit: (_) => FocusScope.of(context)
                               .requestFocus(typeFocusNode),
                           validator: (password) {
-                            Pattern pattern =
-                                r'^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$';
-                            RegExp regex = new RegExp(pattern);
                             if (password.length < 6) {
-                              return 'Das Passwort muss mindestens 6 Buchstaben lang sein';
-                            } else if (!regex.hasMatch(password)) {
-                              return 'Das Passwort muss mindestens 6 Buchstaben lang sein und mind 1 Zahl beinhalten!';
+                              return 'Das Passwort muss mindestens 6 Zeichen lang sein und mind 1 Zahl beinhalten!';
                             } else {
                               return null;
                             }

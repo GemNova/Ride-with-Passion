@@ -367,7 +367,7 @@ class BikeChallangesDetailScreen extends StatelessWidget {
 
   Widget _rankData(ChallengeRoute route, BikeChallengesViewModel model) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Column(
         children: <Widget>[
           _buildTabBar(model),
@@ -375,6 +375,7 @@ class BikeChallangesDetailScreen extends StatelessWidget {
             child: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
+                _buildRankList(model),
                 _buildRankList(model),
                 _buildRankList(model),
               ],
@@ -391,10 +392,11 @@ class BikeChallangesDetailScreen extends StatelessWidget {
       labelPadding: EdgeInsets.zero,
       onTap: (index) => model.handleTabSelection(index),
       indicatorColor: accentColor,
-      indicatorWeight: 2,
+      indicatorWeight: 3,
       indicatorSize: TabBarIndicatorSize.label,
       unselectedLabelColor: Colors.black54,
       tabs: [
+        _buildTab('Alle', model),
         _buildTab('Männer', model),
         _buildTab('Frauen', model),
       ],
@@ -455,7 +457,7 @@ class BikeChallangesDetailScreen extends StatelessWidget {
                             mediumSpace,
                             Expanded(
                               child: Text(
-                                '${rank.userName} ${rank.lastName}',
+                                '${rank.userName} ${rank?.lastName ?? ""}',
                                 style: medium18cb,
                               ),
                             ),

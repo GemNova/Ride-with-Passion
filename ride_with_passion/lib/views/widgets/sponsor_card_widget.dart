@@ -14,7 +14,7 @@ class SponsorCardWidget extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Padding(
         padding: EdgeInsets.all(20),
-        child: CachedNetworkImage(imageUrl: route.sponsorImage),
+        child: CachedNetworkImage(imageUrl: route?.sponsorImage ?? ""),
       ),
     );
   }

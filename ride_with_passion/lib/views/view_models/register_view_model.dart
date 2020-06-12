@@ -39,8 +39,7 @@ class RegisterViewModel extends ChangeNotifier {
       (email?.isNotEmpty ?? false) &&
       (type != null) &&
       // (gender != null) &&
-      tcValue &&
-      tc1Value;
+      tcValue;
 
   setPassword(String password) {
     this.password = password;
@@ -125,6 +124,7 @@ class RegisterViewModel extends ChangeNotifier {
         birthDate: birthDate,
         street: street,
         houseNumber: houseNumber,
+        gewinnSpiel: tc1Value,
         city: city,
         postCode: postCode,
         country: country,

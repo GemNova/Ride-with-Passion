@@ -16,8 +16,6 @@ import 'package:ride_with_passion/views/screens/register_screen.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
-  WidgetsBinding.instance.addObserver(LifecycleService());
-  getIt<TimerService>().startWithoutRouteId();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then(

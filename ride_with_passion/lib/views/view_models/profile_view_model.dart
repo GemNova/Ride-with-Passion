@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/models/route.dart';
-import 'package:ride_with_passion/models/user.dart';
 import 'package:ride_with_passion/router.dart';
 import 'package:ride_with_passion/services/auth_service.dart';
 import 'package:ride_with_passion/services/firebase_service.dart';
+import 'package:ride_with_passion/services/timer_service.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   get userStream => getIt<AuthService>().userStream;
@@ -22,6 +22,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   onLogoutPressed() {
+    getIt<TimerService>().stopFromButton();
     getIt<AuthService>().logout();
   }
 

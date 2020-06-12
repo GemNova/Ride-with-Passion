@@ -33,6 +33,8 @@ class User {
   String city;
   String postCode;
   String country;
+  bool gewinnSpiel;
+  bool debugUser;
 
   User({
     this.id,
@@ -43,9 +45,11 @@ class User {
     this.gender,
     this.imageUrl,
     this.birthDate,
+    this.debugUser,
     this.city,
     this.country,
     this.houseNumber,
+    this.gewinnSpiel,
     this.postCode,
     this.street,
   });

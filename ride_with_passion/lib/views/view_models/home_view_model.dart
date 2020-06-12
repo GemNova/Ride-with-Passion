@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ride_with_passion/function_utils.dart';
 import 'package:ride_with_passion/helper/constants.dart';
 import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/models/route.dart';
+import 'package:ride_with_passion/models/user.dart';
 import 'package:ride_with_passion/router.dart';
 import 'package:ride_with_passion/services/auth_service.dart';
 import 'package:ride_with_passion/services/routes_repository.dart';
@@ -17,7 +19,7 @@ class HomeViewModel extends ChangeNotifier {
 
   BehaviorSubject<bool> get running => _timerService.running;
 
-  String get userName => getIt<AuthService>().user?.firstName;
+  User get user => getIt<AuthService>().user;
 
   ChallengeRoute get challengeRoute => _timerService.challengeRoute;
   BehaviorSubject<List<ChallengeRoute>> _filteredRoutes = BehaviorSubject();
@@ -58,7 +60,7 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void onBikeChallengePressed({RouteType routeType}) {
-    Get.toNamed(BikeChallengesRoute, arguments: routeType);
+    FunctionUtils.launchURL("http://bikechallenge.tirol");
   }
 
   void onChallengeDetailButtonPressed(ChallengeRoute challengeRoute) {

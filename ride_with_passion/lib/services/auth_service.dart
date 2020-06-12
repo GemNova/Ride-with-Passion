@@ -109,21 +109,21 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future registerUser({
-    String email,
-    String password,
-    String firstName,
-    String lastName,
-    String bikeType,
-    String gender,
-    File image,
-    DateTime birthDate,
-    String street,
-    String houseNumber,
-    String city,
-    String postCode,
-    String country,
-  }) async {
+  Future registerUser(
+      {String email,
+      String password,
+      String firstName,
+      String lastName,
+      String bikeType,
+      String gender,
+      File image,
+      DateTime birthDate,
+      String street,
+      String houseNumber,
+      String city,
+      String postCode,
+      String country,
+      bool gewinnSpiel}) async {
     try {
       //this is to wait the data already pushed to firebase before trigger listener
       //to avoid not found user id
@@ -141,11 +141,13 @@ class AuthService with ChangeNotifier {
         firstName: firstName,
         lastName: lastName,
         bikeType: bikeType,
+        debugUser: true,
         gender: gender,
         imageUrl: imageUrl,
         birthDate: birthDate,
         street: street,
         houseNumber: houseNumber,
+        gewinnSpiel: gewinnSpiel,
         city: city,
         postCode: postCode,
         country: country,
@@ -158,6 +160,12 @@ class AuthService with ChangeNotifier {
       _printError(e);
       return Future.error(e.message);
     }
+  }
+
+  forgotPassword(String email) {
+    _authInstance.sendPasswordResetEmail(email: email);
+    return Get.snackbar("Hurra!",
+        "Wir haben dir eine Email zum Zurücksetzen des Passwords geschickt");
   }
 
   _printError(e) {
