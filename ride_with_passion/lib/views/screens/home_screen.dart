@@ -87,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       child: _buildMoreInfo(),
-                      onTap: model.onBikeChallengePressed,
+                      onTap: model.onMoreInfoPressed,
                     ),
                   ),
                   smallSpace,

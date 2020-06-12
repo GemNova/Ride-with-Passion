@@ -60,6 +60,10 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void onBikeChallengePressed({RouteType routeType}) {
+    Get.toNamed(BikeChallengesRoute, arguments: routeType);
+  }
+
+  void onMoreInfoPressed() {
     FunctionUtils.launchURL("http://bikechallenge.tirol");
   }
 
