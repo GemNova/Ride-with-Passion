@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TimerService {
   final log = getLogger("TimerService");
   int _counterTime = 0;
+  DateTime _startTime;
   Timer _timer;
   String _routeId;
   String _routeName;
@@ -162,9 +163,9 @@ class TimerService {
       TimerObject timerObject =
           TimerObject.fromJson(json.decode(_prefs.getString('pref_timer')));
       if (timerObject != null) {
-        DateTime startTime = timerObject.startTime;
+        _startTime = timerObject.startTime;
         DateTime dateTimeNow = DateTime.now();
-        final difference = dateTimeNow.difference(startTime).inSeconds;
+        final difference = dateTimeNow.difference(_startTime).inSeconds;
         _counterTime = difference;
         _timerCounter.add(formattedTimer(Duration(seconds: _counterTime)));
         log.i('_counter sstart in $_counterTime');
@@ -183,6 +184,7 @@ class TimerService {
         'pref_timer',
         json.encode(TimerObject(
             startTime: DateTime.now(), challengeRoute: _challengeRoute)));
+    _startTime = DateTime.now();
     log.i(
         'setting saved. time ${DateTime.now()} route name: ${_challengeRoute.name}');
   }
@@ -195,7 +197,9 @@ class TimerService {
   }
 
   void _timerTick() {
-    _counterTime = _counterTime + 1;
+    //todo check different here instead of plus one
+    final difference = DateTime.now().difference(_startTime).inSeconds;
+    _counterTime = difference;
     _timerCounter.value = formattedTimer(Duration(seconds: _counterTime));
   }
 
