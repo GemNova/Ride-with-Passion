@@ -16,10 +16,17 @@ class RoutesRepository {
   _init() {
     getIt<AuthService>().isLoggedIn.listen((isLoggedIn) {
       if (isLoggedIn) {
-        getIt<FirebaseService>().getRoutes().listen((data) {
-          routes.add(data);
-          logger.i("${data.length} Routes fetched");
-        });
+        if (getIt<AuthService>()?.user?.debugUser ?? false) {
+          getIt<FirebaseService>().getRoutes(true).listen((data) {
+            routes.add(data);
+            logger.i("${routes.value.length} Routes fetched");
+          });
+        } else {
+          getIt<FirebaseService>().getRoutes(false).listen((data) {
+            routes.add(data);
+            logger.i("${routes.value.length} Routes fetched");
+          });
+        }
       }
     });
   }

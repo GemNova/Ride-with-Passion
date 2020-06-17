@@ -30,6 +30,7 @@ ChallengeRoute _$ChallengeRouteFromJson(Map json) {
     name: json['name'] as String,
     routeId: json['routeId'] as String,
     elevationGain: json['elevationGain'] as int,
+    isDebug: json['isDebug'] as bool,
     routeType: json['routeType'] as String,
     sponsorImage: json['sponsorImage'] as String,
   )
@@ -64,6 +65,7 @@ Map<String, dynamic> _$ChallengeRouteToJson(ChallengeRoute instance) =>
       'endCoordinates': instance.endCoordinates?.toJson(),
       'routeGpxFile': instance.routeGpxFile,
       'routeType': instance.routeType,
+      'isDebug': instance.isDebug,
       'rankList': instance.rankList?.map((e) => e?.toJson())?.toList(),
     };
 

@@ -39,24 +39,17 @@ class BikeChallengeEndScreen extends StatelessWidget {
                 style: title24sp.copyWith(fontWeight: FontWeight.w400),
               ),
               smallSpace,
-              FutureBuilder(
-                future: getRank(model),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(
-                      "Rang: #${snapshot.data}",
-                      textAlign: TextAlign.center,
-                      style: title24sp,
-                    );
-                  } else {
-                    return Text(
+              model.isLoading
+                  ? Text(
                       "Berechne Rang...",
                       textAlign: TextAlign.center,
                       style: title24sp,
-                    );
-                  }
-                },
-              ),
+                    )
+                  : Text(
+                      "Rang: #${model.rankNumber}",
+                      textAlign: TextAlign.center,
+                      style: title24sp,
+                    ),
               bigSpace,
               _completeButton(model),
               bigSpace,
@@ -109,26 +102,5 @@ class BikeChallengeEndScreen extends StatelessWidget {
   String getTIme() {
     final String time = route.duration.toString().substring(0, 7);
     return time;
-  }
-
-  Future<int> getRank(BikeChallengeEndViewModel viewModel) async {
-    // final int timeInMili = route.duration.inMilliseconds;
-    // final rank = Rank(trackedTime: timeInMili, userName: "");
-    final ranks =
-        await getIt<FirebaseService>().getRanks(route.trackId, viewModel.user);
-    ranks.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
-    final rank = ranks
-        .firstWhere((element) => element.userId == viewModel.userRank.userId);
-    final index = ranks.indexOf(rank);
-
-    /// 1 is added to index because list is strted from 0th index
-    return index + 1;
-  }
-
-  String getDuration(BikeChallengeEndViewModel viewModel) {
-    final rank = viewModel.userRank;
-    route.rankList.add(rank);
-    int index = route.rankList.indexOf(rank);
-    return index.toString();
   }
 }

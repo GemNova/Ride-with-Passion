@@ -141,7 +141,7 @@ class AuthService with ChangeNotifier {
         firstName: firstName,
         lastName: lastName,
         bikeType: bikeType,
-        debugUser: true,
+        debugUser: false,
         gender: gender,
         imageUrl: imageUrl,
         birthDate: birthDate,

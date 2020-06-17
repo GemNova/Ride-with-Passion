@@ -16,11 +16,14 @@ class FirebaseService {
   final logger = getLogger("FirebaseService");
   double minimumDistance = 0;
 
-  Stream<List<ChallengeRoute>> getRoutes() async* {
+  Stream<List<ChallengeRoute>> getRoutes(bool isDebugUser) async* {
     await for (QuerySnapshot data
         in _fireStoreInstance.collection("routes").snapshots()) {
-      final list =
+      var list =
           data.documents.map((d) => ChallengeRoute.fromJson(d.data)).toList();
+      if (!isDebugUser) {
+        list = list.where((element) => element.isDebug != true).toList();
+      }
       //put featured route on top
       list.sort((a, b) {
         return b.compareTo(a);
@@ -42,14 +45,13 @@ class FirebaseService {
   }
 
   Future<List<Rank>> getRanks(String routeId, [User user]) async {
-    logger.d("get ranks called called");
     QuerySnapshot querySnapshot = await _fireStoreInstance
         .collection('routes')
         .document(routeId)
         .collection('ranks')
         .where("bikeType", isEqualTo: user?.bikeType)
+        .where("gender", isEqualTo: user?.gender)
         .getDocuments();
-    logger.i(querySnapshot.documents);
     final list =
         querySnapshot.documents.map((e) => Rank.fromJson(e.data)).toList();
     return list;
@@ -57,8 +59,6 @@ class FirebaseService {
 
   Future<List<Rank>> getRanksForUser(String userId) async {
     final ranks = [];
-
-    logger.d("get ranks for user called called");
     QuerySnapshot querySnapshot =
         await _fireStoreInstance.collection('routes').getDocuments();
 
@@ -156,13 +156,43 @@ class FirebaseService {
     return directory.path;
   }
 
-  sendRank(Rank rank, String routeId) async {
-    logger.i('rank ${rank.bikeType} ${rank.userName} ${rank.userId}');
-    _fireStoreInstance
-        .collection('routes')
-        .document(routeId)
-        .collection('ranks')
-        .document(rank.userId)
-        .setData(rank.toJson(), merge: true);
+  Future<int> sendRank(Rank rank, String routeId, User user) async {
+    logger.i('send rank');
+    final ranks = await getRanks(routeId, user);
+
+    //find if the current user is have value in firebase
+    final currentRank =
+        ranks.firstWhere((element) => element.userId == rank.userId);
+
+    ranks.add(rank);
+    ranks.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
+    final index = ranks.indexOf(rank);
+    if (currentRank != null) {
+      if (currentRank.trackedTime > rank.trackedTime) {
+        await _fireStoreInstance
+            .collection('routes')
+            .document(routeId)
+            .collection('ranks')
+            .document(rank.userId)
+            .setData(rank.toJson(), merge: true);
+        logger
+            .i('rank updated${rank.bikeType} ${rank.userName} ${rank.userId}');
+      } else {
+        logger.i(
+            'rank not updated${rank.bikeType} ${rank.userName} ${rank.userId}');
+      }
+    } else {
+      ranks.add(rank);
+      await _fireStoreInstance
+          .collection('routes')
+          .document(routeId)
+          .collection('ranks')
+          .document(rank.userId)
+          .setData(rank.toJson(), merge: true);
+      logger.i('new rank ${rank.bikeType} ${rank.userName} ${rank.userId}');
+
+      /// 1 is added to index because list is strted from 0th index
+    }
+    return index + 1;
   }
 }

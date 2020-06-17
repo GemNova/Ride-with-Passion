@@ -16,7 +16,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TimerService {
   final log = getLogger("TimerService");
-  int _counterTime = 0;
   DateTime _startTime;
   Timer _timer;
   String _routeId;
@@ -29,13 +28,10 @@ class TimerService {
   final _locationService = getIt<LocationService>();
   BehaviorSubject<String> _timerCounter = BehaviorSubject()..add('00:00:00');
   BehaviorSubject<bool> _running = BehaviorSubject()..add(false);
-  BehaviorSubject<bool> _isCompleteChallenge = BehaviorSubject()..add(false);
 
   BehaviorSubject<String> get timerCounter => _timerCounter;
 
   BehaviorSubject<bool> get running => _running;
-
-  BehaviorSubject<bool> get isCompletedChallenge => _isCompleteChallenge;
 
   String get routeName => _routeName;
 
@@ -78,7 +74,13 @@ class TimerService {
         longitude: challengeRoute.endCoordinates.lon);
     _routeId = challengeRoute.routeId;
     _routeName = challengeRoute.name;
-    _isCompleteChallenge.add(false);
+  }
+
+  Future<int> getTimerCounter() async {
+    if (_startTime == null) {
+      await checkTimerFromSetting();
+    }
+    return DateTime.now().difference(_startTime).inSeconds;
   }
 
   startTheChallenge() async {
@@ -104,7 +106,7 @@ class TimerService {
     }
     if (await isReachedEndLine() && running.value) {
       stopFromButton();
-      _challengeData.duration = Duration(seconds: _counterTime);
+      _challengeData.duration = Duration(seconds: await getTimerCounter());
       Get.toNamed(BikeChallengesEndRoute, arguments: _challengeData);
     }
     _locationService.getUpdateLocation((newPosition) {
@@ -119,11 +121,8 @@ class TimerService {
   }
 
   Future finishChallenge(double distance) async {
-    log.i('distance is less 50m from end line, distance $distance');
-
     if (await FunctionUtils.isDoubleBelow(distance) && running.value) {
-      _isCompleteChallenge.value = true;
-      _challengeData.duration = Duration(seconds: _counterTime);
+      _challengeData.duration = Duration(seconds: await getTimerCounter());
       log.i('distance is less 50m from end line, distance $distance');
       log.i('challenge data saved is ${_challengeData.duration.inSeconds}');
       stopFromButton();
@@ -164,11 +163,8 @@ class TimerService {
           TimerObject.fromJson(json.decode(_prefs.getString('pref_timer')));
       if (timerObject != null) {
         _startTime = timerObject.startTime;
-        DateTime dateTimeNow = DateTime.now();
-        final difference = dateTimeNow.difference(_startTime).inSeconds;
-        _counterTime = difference;
-        _timerCounter.add(formattedTimer(Duration(seconds: _counterTime)));
-        log.i('_counter sstart in $_counterTime');
+        _timerCounter
+            .add(formattedTimer(Duration(seconds: await getTimerCounter())));
       }
       return timerObject.challengeRoute;
     } else {
@@ -196,11 +192,10 @@ class TimerService {
     });
   }
 
-  void _timerTick() {
+  void _timerTick() async {
     //todo check different here instead of plus one
-    final difference = DateTime.now().difference(_startTime).inSeconds;
-    _counterTime = difference;
-    _timerCounter.value = formattedTimer(Duration(seconds: _counterTime));
+    _timerCounter.value =
+        formattedTimer(Duration(seconds: await getTimerCounter()));
   }
 
   stopFromButton() async {
@@ -214,7 +209,6 @@ class TimerService {
       _timer?.cancel();
       _timer = null;
       _running.add(false);
-      _counterTime = 0;
       _timerCounter.add('00:00:00');
     }
   }

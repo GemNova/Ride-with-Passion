@@ -25,6 +25,7 @@ class ChallengeRoute {
   Coordinates endCoordinates;
   String routeGpxFile;
   String routeType;
+  bool isDebug;
   List<Rank> rankList;
 
   ChallengeRoute({
@@ -42,6 +43,7 @@ class ChallengeRoute {
     this.name,
     this.routeId,
     this.elevationGain,
+    this.isDebug,
     this.routeType,
     this.sponsorImage,
   });

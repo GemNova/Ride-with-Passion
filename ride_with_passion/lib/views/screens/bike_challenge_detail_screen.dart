@@ -13,6 +13,7 @@ import 'package:ride_with_passion/views/view_models/bike_challenges_view_model.d
 import 'package:ride_with_passion/views/widgets/app_bar_blue_widget.dart';
 import 'package:ride_with_passion/views/widgets/custom_button.dart';
 import 'package:ride_with_passion/views/widgets/custom_card.dart';
+import 'package:ride_with_passion/views/widgets/custom_loading_indicator.dart';
 import 'package:ride_with_passion/views/widgets/sponsor_card_widget.dart';
 import 'package:ride_with_passion/views/widgets/text_title_top_widget.dart';
 import 'package:ride_with_passion/views/widgets/timer_widget.dart';
@@ -396,7 +397,7 @@ class BikeChallangesDetailScreen extends StatelessWidget {
       indicatorSize: TabBarIndicatorSize.label,
       unselectedLabelColor: Colors.black54,
       tabs: [
-        _buildTab('Alle', model),
+        _buildTab('All', model),
         _buildTab('Männer', model),
         _buildTab('Frauen', model),
       ],
@@ -436,13 +437,15 @@ class BikeChallangesDetailScreen extends StatelessWidget {
                 padding: EdgeInsets.only(right: 20),
                 itemCount: model.filteredRankList.length,
                 separatorBuilder: (context, index) {
+                  if (index >= model.filteredRankList.length)
+                    return Container();
                   return dividerOrangeText();
                 },
                 itemBuilder: (context, index) {
-                  // if (model.filteredRankList.length != 1 &&
-                  //     (index == 0 || index == model.filteredRankList.length + 1)) {
-                  //   return Container(); // zero height: not visible
-                  // }
+                  //the tab rerendering both 1st and 3rd tab when it's from first tab to third tab
+                  //and give array error for a brief moment, this is to prevent that
+                  if (index >= model.filteredRankList.length)
+                    return Container();
                   final rank = model.filteredRankList[index];
                   return Column(
                     children: <Widget>[
