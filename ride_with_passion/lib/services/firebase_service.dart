@@ -14,7 +14,7 @@ enum AuthProblems { UserNotFound, PasswordNotValid, NetworkError }
 class FirebaseService {
   var _fireStoreInstance = Firestore.instance;
   final logger = getLogger("FirebaseService");
-  double minimumDistance = 0;
+  double minimumDistance = 30;
 
   Stream<List<ChallengeRoute>> getRoutes(bool isDebugUser) async* {
     await for (QuerySnapshot data

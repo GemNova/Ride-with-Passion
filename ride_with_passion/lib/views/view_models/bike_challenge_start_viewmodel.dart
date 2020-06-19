@@ -6,6 +6,7 @@ import 'package:ride_with_passion/function_utils.dart';
 import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/models/route.dart';
 import 'package:ride_with_passion/router.dart';
+import 'package:ride_with_passion/services/firebase_service.dart';
 import 'package:ride_with_passion/services/location_service.dart';
 import 'package:ride_with_passion/styles.dart';
 import 'package:ride_with_passion/views/widgets/timer_countdown_widget.dart';
@@ -21,6 +22,7 @@ class BikeChallengeStartViewModel extends ChangeNotifier {
 
   BehaviorSubject<Position> get positionStream => _positionStream;
 
+  double gpsRadius = getIt<FirebaseService>().minimumDistance;
   ChallengeRoute challengeRoute;
   PageController pageController;
   Position raceStartLocation;

@@ -99,7 +99,7 @@ class BikeChallengeStartScreen extends StatelessWidget {
                     "${model.challengeRoute.startCoordinates.lat}, ${model.challengeRoute.startCoordinates.lon}",
                   ),
                   center: model.raceLatLng(),
-                  radius: 50,
+                  radius: model.gpsRadius,
                   fillColor: Color.fromRGBO(173, 216, 230, 0.5),
                   strokeColor: Color.fromRGBO(173, 216, 230, 0.5),
                   strokeWidth: 2,
