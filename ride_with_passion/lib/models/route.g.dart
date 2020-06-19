@@ -77,6 +77,11 @@ Rank _$RankFromJson(Map json) {
     lastName: json['lastName'] as String,
     userName: json['userName'] as String,
     trackedTime: json['trackedTime'] as int,
+    endCoordinates: json['endCoordinates'] == null
+        ? null
+        : Coordinates.fromJson((json['endCoordinates'] as Map)?.map(
+            (k, e) => MapEntry(k as String, e),
+          )),
   );
 }
 
@@ -87,6 +92,7 @@ Map<String, dynamic> _$RankToJson(Rank instance) => <String, dynamic>{
       'gender': instance.gender,
       'bikeType': instance.bikeType,
       'trackedTime': instance.trackedTime,
+      'endCoordinates': instance.endCoordinates?.toJson(),
     };
 
 Coordinates _$CoordinatesFromJson(Map json) {

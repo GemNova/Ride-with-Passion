@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:ride_with_passion/function_utils.dart';
 import 'package:ride_with_passion/locator.dart';
 import 'package:ride_with_passion/logger.dart';
 import 'package:ride_with_passion/models/challenge.dart';
@@ -67,6 +66,7 @@ class TimerService {
       rankList: challengeRoute.rankList,
       challengeName: challengeRoute.name,
       trackId: challengeRoute.routeId,
+      endCoordinates: challengeRoute.endCoordinates,
     );
     _challengeRoute = challengeRoute;
     _endRouteChallenge = Position(
@@ -86,9 +86,11 @@ class TimerService {
   startTheChallenge() async {
     _running.add(true);
     startTimer();
-    listenWhenReachedEndLine();
+    //listenWhenReachedEndLine();
   }
 
+  //todo remove this later, save just in case client want it back
+  /*
   Future<bool> isReachedEndLine() async {
     if (_endRouteChallenge == null) {
       return false;
@@ -118,17 +120,13 @@ class TimerService {
         await finishChallenge(distance);
       });
     });
-  }
+  }*/
 
-  Future finishChallenge(double distance) async {
-    if (await FunctionUtils.isDoubleBelow(distance) && running.value) {
+  Future finishChallenge() async {
+    if (running.value) {
       _challengeData.duration = Duration(seconds: await getTimerCounter());
-      log.i('distance is less 50m from end line, distance $distance');
-      log.i('challenge data saved is ${_challengeData.duration.inSeconds}');
       stopFromButton();
       Get.toNamed(BikeChallengesEndRoute, arguments: _challengeData);
-    } else {
-      log.i('distance is more 50m from end line, distance $distance');
     }
   }
 

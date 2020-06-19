@@ -166,7 +166,6 @@ class FirebaseService {
 
     ranks.add(rank);
     ranks.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
-    final index = ranks.indexOf(rank);
     if (currentRank != null) {
       if (currentRank.trackedTime > rank.trackedTime) {
         await _fireStoreInstance
@@ -190,9 +189,10 @@ class FirebaseService {
           .document(rank.userId)
           .setData(rank.toJson(), merge: true);
       logger.i('new rank ${rank.bikeType} ${rank.userName} ${rank.userId}');
-
-      /// 1 is added to index because list is strted from 0th index
     }
+    final index = ranks.indexOf(rank);
+
+    /// 1 is added to index because list is strted from 0th index
     return index + 1;
   }
 }

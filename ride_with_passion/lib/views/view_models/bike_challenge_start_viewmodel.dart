@@ -50,7 +50,10 @@ class BikeChallengeStartViewModel extends ChangeNotifier {
     raceEndLocation = Position(
         latitude: challengeRoute.endCoordinates.lat,
         longitude: challengeRoute.endCoordinates.lon);
-    print('init race location ${raceStartLocation.latitude}');
+    print(
+        'start race location ${raceStartLocation.latitude} ${raceStartLocation.longitude}');
+    print(
+        'end race location ${raceEndLocation.latitude} ${raceEndLocation.longitude}');
   }
 
   _updateGeoService() async {

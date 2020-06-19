@@ -26,7 +26,8 @@ class BikeChallengeEndViewModel extends ChangeNotifier {
         userName: user.firstName,
         lastName: user.lastName,
         gender: user.gender,
-        userId: user.id);
+        userId: user.id,
+        endCoordinates: route.endCoordinates);
     //later we will filter the userRank list by biketype in choicechip
     rankNumber = await sendRank(route.trackId, user);
     isLoading = false;

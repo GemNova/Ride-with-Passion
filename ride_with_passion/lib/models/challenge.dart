@@ -6,10 +6,14 @@ class Challenge {
   String challengeName;
   Duration duration;
   List<Rank> rankList;
-  Challenge(
-      {this.userId,
-      this.duration,
-      this.rankList,
-      this.challengeName,
-      this.trackId});
+  Coordinates endCoordinates;
+
+  Challenge({
+    this.userId,
+    this.duration,
+    this.rankList,
+    this.challengeName,
+    this.trackId,
+    this.endCoordinates,
+  });
 }

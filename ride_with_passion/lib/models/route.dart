@@ -65,6 +65,7 @@ class Rank {
   String gender;
   String bikeType;
   int trackedTime;
+  Coordinates endCoordinates;
 
   Rank({
     this.userId,
@@ -73,6 +74,7 @@ class Rank {
     this.lastName,
     this.userName,
     this.trackedTime,
+    this.endCoordinates,
   });
 
   factory Rank.fromJson(Map<String, dynamic> json) => _$RankFromJson(json);

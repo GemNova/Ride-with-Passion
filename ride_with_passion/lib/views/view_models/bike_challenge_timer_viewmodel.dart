@@ -34,7 +34,7 @@ class BikeChallengeTimerViewModel extends ChangeNotifier {
   bool get isDebugUser => _authService.user.debugUser;
 
   finishChallenge() async {
-    _timerService.finishChallenge(0);
+    _timerService.finishChallenge();
   }
 
   stopTimer() async {

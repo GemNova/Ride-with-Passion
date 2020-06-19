@@ -13,7 +13,6 @@ import 'package:ride_with_passion/views/view_models/bike_challenges_view_model.d
 import 'package:ride_with_passion/views/widgets/app_bar_blue_widget.dart';
 import 'package:ride_with_passion/views/widgets/custom_button.dart';
 import 'package:ride_with_passion/views/widgets/custom_card.dart';
-import 'package:ride_with_passion/views/widgets/custom_loading_indicator.dart';
 import 'package:ride_with_passion/views/widgets/sponsor_card_widget.dart';
 import 'package:ride_with_passion/views/widgets/text_title_top_widget.dart';
 import 'package:ride_with_passion/views/widgets/timer_widget.dart';
