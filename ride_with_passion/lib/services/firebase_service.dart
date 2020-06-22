@@ -161,8 +161,9 @@ class FirebaseService {
     final ranks = await getRanks(routeId, user);
 
     //find if the current user is have value in firebase
-    final currentRank =
-        ranks.firstWhere((element) => element.userId == rank.userId);
+    final currentRank = ranks.firstWhere(
+        (element) => element.userId == rank.userId,
+        orElse: () => null);
 
     ranks.add(rank);
     ranks.sort((x, y) => x.trackedTime.compareTo(y.trackedTime));
